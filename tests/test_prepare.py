@@ -1,4 +1,7 @@
-"""Tests for the catalogue preparation pipeline. Spec: Dataset and Data Pipeline Specification §3–§4, §9."""
+"""Tests for the catalogue preparation pipeline.
+
+Spec: Dataset and Data Pipeline Specification §3–§4, §9.
+"""
 
 from __future__ import annotations
 
@@ -60,7 +63,8 @@ def test_split_title_without_year_keeps_title_and_null_year():
 
 
 def test_split_title_keeps_alternative_name_before_year():
-    assert split_title("Toy Film Beta, The (Le Bêta) (2001)") == ("Toy Film Beta, The (Le Bêta)", 2001)
+    expected = ("Toy Film Beta, The (Le Bêta)", 2001)
+    assert split_title("Toy Film Beta, The (Le Bêta) (2001)") == expected
 
 
 def test_split_title_tolerates_trailing_whitespace():
@@ -85,7 +89,8 @@ def test_normalise_tag_strips_lowercases_and_collapses_spaces():
 def test_embed_text_uses_display_names_and_omits_empty_tags():
     """Dataset Spec §3 P8."""
     display = {"Sci-Fi": "science fiction", "Children": "children's"}
-    assert embed_text("X", ["Sci-Fi"], ["space"], display) == "X. Genres: science fiction. Tags: space."
+    expected = "X. Genres: science fiction. Tags: space."
+    assert embed_text("X", ["Sci-Fi"], ["space"], display) == expected
     assert embed_text("X", ["Children"], [], display) == "X. Genres: children's."
 
 
@@ -178,34 +183,34 @@ def test_manifest_keeps_existing_model_and_index_sections(raw_dir, registry, tmp
 
 def test_d1_missing_column_aborts(raw_dir, registry):
     (raw_dir / "movies.csv").write_text("movieId,name,genres\n1,X (2000),Drama\n", encoding="utf-8")
-    with pytest.raises(PrepareError, match="^D1"):
+    with pytest.raises(PrepareError, match=r"^D1"):
         run(raw_dir, registry)
 
 
 def test_d1_missing_file_aborts(raw_dir, registry):
     (raw_dir / "tags.csv").unlink()
-    with pytest.raises(PrepareError, match="^D1"):
+    with pytest.raises(PrepareError, match=r"^D1"):
         run(raw_dir, registry)
 
 
 def test_d2_duplicate_movie_id_aborts(raw_dir, registry):
     with (raw_dir / "movies.csv").open("a", encoding="utf-8") as fh:
         fh.write("1,Duplicate (1999),Drama\n")
-    with pytest.raises(PrepareError, match="^D2"):
+    with pytest.raises(PrepareError, match=r"^D2"):
         run(raw_dir, registry)
 
 
 def test_d4_rating_out_of_range_aborts(raw_dir, registry):
     with (raw_dir / "ratings.csv").open("a", encoding="utf-8") as fh:
         fh.write("4,1,5.5,964982799\n")
-    with pytest.raises(PrepareError, match="^D4"):
+    with pytest.raises(PrepareError, match=r"^D4"):
         run(raw_dir, registry)
 
 
 def test_d5_unknown_genre_aborts(raw_dir, registry):
     with (raw_dir / "movies.csv").open("a", encoding="utf-8") as fh:
         fh.write("9,Toy Film Iota (2000),Superhero\n")
-    with pytest.raises(PrepareError, match="^D5"):
+    with pytest.raises(PrepareError, match=r"^D5"):
         run(raw_dir, registry)
 
 
