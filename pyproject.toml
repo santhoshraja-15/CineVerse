@@ -32,3 +32,4 @@ strict = true
 ignore_missing_imports = true
 files = ["cineverse/compiler"]
 plugins = ["pydantic.mypy"]
+follow_imports = "silent"  # the gate is the compiler package
