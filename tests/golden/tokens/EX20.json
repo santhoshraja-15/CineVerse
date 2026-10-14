@@ -1,0 +1,41 @@
+{
+  "diagnostics": [],
+  "tokens": [
+    {
+      "lexeme": "kubrick",
+      "span": [
+        0,
+        7
+      ],
+      "type": "WORD",
+      "value": "kubrick"
+    },
+    {
+      "lexeme": "style",
+      "span": [
+        8,
+        13
+      ],
+      "type": "WORD",
+      "value": "style"
+    },
+    {
+      "lexeme": "space",
+      "span": [
+        14,
+        19
+      ],
+      "type": "DESCRIPTOR",
+      "value": "space"
+    },
+    {
+      "lexeme": "movies",
+      "span": [
+        20,
+        26
+      ],
+      "type": "ITEM",
+      "value": "ITEM"
+    }
+  ]
+}

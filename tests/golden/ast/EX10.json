@@ -1,0 +1,38 @@
+{
+  "ast": {
+    "clauses": [
+      {
+        "field_raw": "rated",
+        "hedged": false,
+        "kind": "ConstraintClause",
+        "node_id": 1,
+        "op": ">",
+        "span": [
+          0,
+          13
+        ],
+        "unit_raw": null,
+        "values": [
+          {
+            "kind": "NumberNode",
+            "node_id": 2,
+            "span": [
+              12,
+              13
+            ],
+            "unit_raw": null,
+            "value": 9
+          }
+        ]
+      }
+    ],
+    "kind": "RequestNode",
+    "node_id": 0,
+    "source": "rated above 9",
+    "span": [
+      0,
+      13
+    ]
+  },
+  "diagnostics": []
+}

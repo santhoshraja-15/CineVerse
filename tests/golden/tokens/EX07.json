@@ -1,0 +1,43 @@
+{
+  "diagnostics": [],
+  "tokens": [
+    {
+      "lexeme": "comedy",
+      "span": [
+        0,
+        6
+      ],
+      "type": "GENRE",
+      "value": [
+        "Comedy"
+      ]
+    },
+    {
+      "lexeme": "under",
+      "span": [
+        7,
+        12
+      ],
+      "type": "CMP",
+      "value": "<"
+    },
+    {
+      "lexeme": "2",
+      "span": [
+        13,
+        14
+      ],
+      "type": "NUMBER",
+      "value": 2
+    },
+    {
+      "lexeme": "hours",
+      "span": [
+        15,
+        20
+      ],
+      "type": "UNIT",
+      "value": "hours"
+    }
+  ]
+}

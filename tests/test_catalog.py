@@ -1,4 +1,7 @@
-"""Tests for runtime catalogue access. Spec: Recommendation Engine Specification §2.1; Dataset Spec §9."""
+"""Tests for runtime catalogue access.
+
+Spec: Recommendation Engine Specification §2.1; Dataset Spec §9.
+"""
 
 from __future__ import annotations
 

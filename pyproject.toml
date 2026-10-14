@@ -1,0 +1,35 @@
+[project]
+name = "cineverse"
+version = "0.1.0"
+description = "Compiling natural-language movie requests into optimized, explainable hybrid recommendation plans"
+requires-python = ">=3.11,<3.12"
+readme = "README.md"
+
+[tool.setuptools.packages.find]
+include = ["cineverse*"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+extend-exclude = [".venv"]  # /data and /artifacts hold no Python
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "SIM", "RUF"]
+ignore = ["RUF001", "RUF002", "RUF003"]  # en dashes, arrows and ★ are deliberate in text
+
+[tool.ruff.lint.per-file-ignores]
+"app/*" = ["E402"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+markers = ["full: needs the real catalogue and index (skipped when artifacts are absent)"]
+addopts = "-p no:cacheprovider"
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+ignore_missing_imports = true
+files = ["cineverse/compiler"]
+plugins = ["pydantic.mypy"]
+follow_imports = "silent"  # the gate is the compiler package

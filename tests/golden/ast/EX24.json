@@ -1,0 +1,62 @@
+{
+  "ast": {
+    "clauses": [
+      {
+        "has_or": false,
+        "kind": "PreferenceClause",
+        "modifier": "NONE",
+        "node_id": 1,
+        "span": [
+          0,
+          6
+        ],
+        "terms": [
+          {
+            "genres": [
+              "Comedy"
+            ],
+            "kind": "GenreTerm",
+            "node_id": 2,
+            "raw": "comedy",
+            "span": [
+              0,
+              6
+            ]
+          }
+        ]
+      },
+      {
+        "field_raw": null,
+        "hedged": false,
+        "kind": "ConstraintClause",
+        "node_id": 3,
+        "op": ">=",
+        "span": [
+          7,
+          16
+        ],
+        "unit_raw": null,
+        "values": [
+          {
+            "kind": "NumberNode",
+            "node_id": 4,
+            "span": [
+              12,
+              16
+            ],
+            "unit_raw": null,
+            "value": 2011
+          }
+        ]
+      }
+    ],
+    "kind": "RequestNode",
+    "node_id": 0,
+    "source": "comedy from 2011",
+    "span": [
+      0,
+      16
+    ]
+  },
+  "diagnostics": []
+}

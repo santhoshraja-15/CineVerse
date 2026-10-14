@@ -1,0 +1,95 @@
+{
+  "diagnostics": [],
+  "tokens": [
+    {
+      "lexeme": "heist",
+      "span": [
+        0,
+        5
+      ],
+      "type": "DESCRIPTOR",
+      "value": "heist"
+    },
+    {
+      "lexeme": "movies",
+      "span": [
+        6,
+        12
+      ],
+      "type": "ITEM",
+      "value": "ITEM"
+    },
+    {
+      "lexeme": "between",
+      "span": [
+        13,
+        20
+      ],
+      "type": "BETWEEN",
+      "value": "BETWEEN"
+    },
+    {
+      "lexeme": "2000",
+      "span": [
+        21,
+        25
+      ],
+      "type": "NUMBER",
+      "value": 2000
+    },
+    {
+      "lexeme": "and",
+      "span": [
+        26,
+        29
+      ],
+      "type": "SEP",
+      "value": "SEP"
+    },
+    {
+      "lexeme": "2010",
+      "span": [
+        30,
+        34
+      ],
+      "type": "NUMBER",
+      "value": 2010
+    },
+    {
+      "lexeme": "rated",
+      "span": [
+        35,
+        40
+      ],
+      "type": "FIELD",
+      "value": "rating"
+    },
+    {
+      "lexeme": "at least",
+      "span": [
+        41,
+        49
+      ],
+      "type": "CMP",
+      "value": ">="
+    },
+    {
+      "lexeme": "4",
+      "span": [
+        50,
+        51
+      ],
+      "type": "NUMBER",
+      "value": 4
+    },
+    {
+      "lexeme": "stars",
+      "span": [
+        52,
+        57
+      ],
+      "type": "UNIT",
+      "value": "stars"
+    }
+  ]
+}

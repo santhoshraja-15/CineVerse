@@ -1,0 +1,41 @@
+{
+  "diagnostics": [],
+  "tokens": [
+    {
+      "lexeme": "after",
+      "span": [
+        0,
+        5
+      ],
+      "type": "CMP",
+      "value": ">"
+    },
+    {
+      "lexeme": "2015",
+      "span": [
+        6,
+        10
+      ],
+      "type": "NUMBER",
+      "value": 2015
+    },
+    {
+      "lexeme": "before",
+      "span": [
+        11,
+        17
+      ],
+      "type": "CMP",
+      "value": "<"
+    },
+    {
+      "lexeme": "2000",
+      "span": [
+        18,
+        22
+      ],
+      "type": "NUMBER",
+      "value": 2000
+    }
+  ]
+}

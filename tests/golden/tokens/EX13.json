@@ -1,0 +1,41 @@
+{
+  "diagnostics": [],
+  "tokens": [
+    {
+      "lexeme": "show me",
+      "span": [
+        0,
+        7
+      ],
+      "type": "LIMIT",
+      "value": "LIMIT"
+    },
+    {
+      "lexeme": "3",
+      "span": [
+        8,
+        9
+      ],
+      "type": "NUMBER",
+      "value": 3
+    },
+    {
+      "lexeme": "time travel",
+      "span": [
+        10,
+        21
+      ],
+      "type": "DESCRIPTOR",
+      "value": "time travel"
+    },
+    {
+      "lexeme": "movies",
+      "span": [
+        22,
+        28
+      ],
+      "type": "ITEM",
+      "value": "ITEM"
+    }
+  ]
+}

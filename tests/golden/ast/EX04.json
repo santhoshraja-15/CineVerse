@@ -1,0 +1,72 @@
+{
+  "ast": {
+    "clauses": [
+      {
+        "has_or": false,
+        "kind": "PreferenceClause",
+        "modifier": "STRICT",
+        "node_id": 1,
+        "span": [
+          0,
+          13
+        ],
+        "terms": [
+          {
+            "genres": [
+              "Comedy"
+            ],
+            "kind": "GenreTerm",
+            "node_id": 2,
+            "raw": "comedies",
+            "span": [
+              5,
+              13
+            ]
+          }
+        ]
+      },
+      {
+        "field_raw": null,
+        "hedged": false,
+        "kind": "ConstraintClause",
+        "node_id": 3,
+        "op": "DECADE",
+        "span": [
+          21,
+          24
+        ],
+        "unit_raw": null,
+        "values": [
+          {
+            "kind": "NumberNode",
+            "node_id": 4,
+            "span": [
+              21,
+              24
+            ],
+            "unit_raw": null,
+            "value": 1990
+          },
+          {
+            "kind": "NumberNode",
+            "node_id": 5,
+            "span": [
+              21,
+              24
+            ],
+            "unit_raw": null,
+            "value": 1999
+          }
+        ]
+      }
+    ],
+    "kind": "RequestNode",
+    "node_id": 0,
+    "source": "only comedies in the 90s",
+    "span": [
+      0,
+      24
+    ]
+  },
+  "diagnostics": []
+}

@@ -52,7 +52,9 @@ class Catalog:
     @classmethod
     def load(cls, path: Path) -> Catalog:
         if not Path(path).is_file():
-            raise CatalogError(f"catalogue not found: {path} (run python -m cineverse.data.prepare)")
+            raise CatalogError(
+                f"catalogue not found: {path} (run python -m cineverse.data.prepare)"
+            )
         table = pq.read_table(path)
         missing = [c for c in REQUIRED_COLUMNS if c not in table.column_names]
         if missing:

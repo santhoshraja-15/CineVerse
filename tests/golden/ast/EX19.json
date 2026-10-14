@@ -1,0 +1,47 @@
+{
+  "ast": {
+    "clauses": [
+      {
+        "kind": "LimitClause",
+        "n": 100,
+        "node_id": 1,
+        "span": [
+          0,
+          7
+        ]
+      },
+      {
+        "has_or": false,
+        "kind": "PreferenceClause",
+        "modifier": "NONE",
+        "node_id": 2,
+        "span": [
+          8,
+          21
+        ],
+        "terms": [
+          {
+            "genres": [
+              "Action"
+            ],
+            "kind": "GenreTerm",
+            "node_id": 3,
+            "raw": "action",
+            "span": [
+              8,
+              14
+            ]
+          }
+        ]
+      }
+    ],
+    "kind": "RequestNode",
+    "node_id": 0,
+    "source": "top 100 action movies",
+    "span": [
+      0,
+      21
+    ]
+  },
+  "diagnostics": []
+}

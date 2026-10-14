@@ -1,0 +1,71 @@
+{
+  "ast": {
+    "clauses": [
+      {
+        "hedged": false,
+        "kind": "ExclusionClause",
+        "node_id": 1,
+        "span": [
+          0,
+          15
+        ],
+        "strength": "SOFT",
+        "targets": [
+          {
+            "kind": "DescriptorTerm",
+            "node_id": 2,
+            "span": [
+              8,
+              15
+            ],
+            "text": "violent"
+          }
+        ]
+      },
+      {
+        "has_or": false,
+        "kind": "PreferenceClause",
+        "modifier": "NONE",
+        "node_id": 3,
+        "span": [
+          16,
+          27
+        ],
+        "terms": [
+          {
+            "genres": [
+              "Crime"
+            ],
+            "kind": "GenreTerm",
+            "node_id": 4,
+            "raw": "crime",
+            "span": [
+              16,
+              21
+            ]
+          },
+          {
+            "genres": [
+              "Drama"
+            ],
+            "kind": "GenreTerm",
+            "node_id": 5,
+            "raw": "drama",
+            "span": [
+              22,
+              27
+            ]
+          }
+        ]
+      }
+    ],
+    "kind": "RequestNode",
+    "node_id": 0,
+    "source": "not too violent crime drama",
+    "span": [
+      0,
+      27
+    ]
+  },
+  "diagnostics": []
+}

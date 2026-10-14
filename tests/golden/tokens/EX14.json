@@ -1,0 +1,53 @@
+{
+  "diagnostics": [],
+  "tokens": [
+    {
+      "lexeme": "rom-com",
+      "span": [
+        0,
+        7
+      ],
+      "type": "GENRE",
+      "value": [
+        "Romance",
+        "Comedy"
+      ]
+    },
+    {
+      "lexeme": ",",
+      "span": [
+        7,
+        8
+      ],
+      "type": "SEP",
+      "value": "SEP"
+    },
+    {
+      "lexeme": "at least",
+      "span": [
+        9,
+        17
+      ],
+      "type": "CMP",
+      "value": ">="
+    },
+    {
+      "lexeme": "100",
+      "span": [
+        18,
+        21
+      ],
+      "type": "NUMBER",
+      "value": 100
+    },
+    {
+      "lexeme": "ratings",
+      "span": [
+        22,
+        29
+      ],
+      "type": "UNIT",
+      "value": "ratings"
+    }
+  ]
+}

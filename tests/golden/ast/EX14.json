@@ -1,0 +1,63 @@
+{
+  "ast": {
+    "clauses": [
+      {
+        "has_or": false,
+        "kind": "PreferenceClause",
+        "modifier": "NONE",
+        "node_id": 1,
+        "span": [
+          0,
+          7
+        ],
+        "terms": [
+          {
+            "genres": [
+              "Romance",
+              "Comedy"
+            ],
+            "kind": "GenreTerm",
+            "node_id": 2,
+            "raw": "rom-com",
+            "span": [
+              0,
+              7
+            ]
+          }
+        ]
+      },
+      {
+        "field_raw": null,
+        "hedged": false,
+        "kind": "ConstraintClause",
+        "node_id": 3,
+        "op": ">=",
+        "span": [
+          9,
+          29
+        ],
+        "unit_raw": null,
+        "values": [
+          {
+            "kind": "NumberNode",
+            "node_id": 4,
+            "span": [
+              18,
+              29
+            ],
+            "unit_raw": "ratings",
+            "value": 100
+          }
+        ]
+      }
+    ],
+    "kind": "RequestNode",
+    "node_id": 0,
+    "source": "rom-com, at least 100 ratings",
+    "span": [
+      0,
+      29
+    ]
+  },
+  "diagnostics": []
+}

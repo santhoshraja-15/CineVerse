@@ -1,0 +1,25 @@
+{
+  "diagnostics": [],
+  "tokens": [
+    {
+      "lexeme": "no",
+      "span": [
+        0,
+        2
+      ],
+      "type": "NEG_HARD",
+      "value": "HARD"
+    },
+    {
+      "lexeme": "romance",
+      "span": [
+        3,
+        10
+      ],
+      "type": "GENRE",
+      "value": [
+        "Romance"
+      ]
+    }
+  ]
+}

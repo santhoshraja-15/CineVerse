@@ -1,0 +1,50 @@
+{
+  "ast": {
+    "clauses": [
+      {
+        "has_or": true,
+        "kind": "PreferenceClause",
+        "modifier": "STRICT",
+        "node_id": 1,
+        "span": [
+          0,
+          20
+        ],
+        "terms": [
+          {
+            "genres": [
+              "Comedy"
+            ],
+            "kind": "GenreTerm",
+            "node_id": 2,
+            "raw": "comedy",
+            "span": [
+              5,
+              11
+            ]
+          },
+          {
+            "genres": [
+              "Drama"
+            ],
+            "kind": "GenreTerm",
+            "node_id": 3,
+            "raw": "drama",
+            "span": [
+              15,
+              20
+            ]
+          }
+        ]
+      }
+    ],
+    "kind": "RequestNode",
+    "node_id": 0,
+    "source": "only comedy or drama",
+    "span": [
+      0,
+      20
+    ]
+  },
+  "diagnostics": []
+}

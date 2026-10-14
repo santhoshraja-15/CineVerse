@@ -1,0 +1,38 @@
+{
+  "ast": {
+    "clauses": [
+      {
+        "hedged": false,
+        "kind": "ExclusionClause",
+        "node_id": 1,
+        "span": [
+          0,
+          10
+        ],
+        "strength": "HARD",
+        "targets": [
+          {
+            "genres": [
+              "Romance"
+            ],
+            "kind": "GenreTerm",
+            "node_id": 2,
+            "raw": "romance",
+            "span": [
+              3,
+              10
+            ]
+          }
+        ]
+      }
+    ],
+    "kind": "RequestNode",
+    "node_id": 0,
+    "source": "no romance",
+    "span": [
+      0,
+      10
+    ]
+  },
+  "diagnostics": []
+}

@@ -1,0 +1,86 @@
+{
+  "ast": {
+    "clauses": [
+      {
+        "has_or": false,
+        "kind": "PreferenceClause",
+        "modifier": "NONE",
+        "node_id": 1,
+        "span": [
+          0,
+          5
+        ],
+        "terms": [
+          {
+            "genres": [
+              "Drama"
+            ],
+            "kind": "GenreTerm",
+            "node_id": 2,
+            "raw": "drama",
+            "span": [
+              0,
+              5
+            ]
+          }
+        ]
+      },
+      {
+        "field_raw": null,
+        "hedged": false,
+        "kind": "ConstraintClause",
+        "node_id": 3,
+        "op": ">",
+        "span": [
+          6,
+          16
+        ],
+        "unit_raw": null,
+        "values": [
+          {
+            "kind": "NumberNode",
+            "node_id": 4,
+            "span": [
+              12,
+              16
+            ],
+            "unit_raw": null,
+            "value": 2000
+          }
+        ]
+      },
+      {
+        "field_raw": "released",
+        "hedged": false,
+        "kind": "ConstraintClause",
+        "node_id": 5,
+        "op": ">",
+        "span": [
+          18,
+          37
+        ],
+        "unit_raw": null,
+        "values": [
+          {
+            "kind": "NumberNode",
+            "node_id": 6,
+            "span": [
+              33,
+              37
+            ],
+            "unit_raw": null,
+            "value": 2010
+          }
+        ]
+      }
+    ],
+    "kind": "RequestNode",
+    "node_id": 0,
+    "source": "drama after 2000, released after 2010",
+    "span": [
+      0,
+      37
+    ]
+  },
+  "diagnostics": []
+}

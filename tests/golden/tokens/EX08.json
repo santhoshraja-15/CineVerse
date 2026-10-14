@@ -1,0 +1,54 @@
+{
+  "diagnostics": [],
+  "tokens": [
+    {
+      "lexeme": "only",
+      "span": [
+        0,
+        4
+      ],
+      "type": "STRICT",
+      "value": "HARD"
+    },
+    {
+      "lexeme": "horror",
+      "span": [
+        5,
+        11
+      ],
+      "type": "GENRE",
+      "value": [
+        "Horror"
+      ]
+    },
+    {
+      "lexeme": "and",
+      "span": [
+        12,
+        15
+      ],
+      "type": "SEP",
+      "value": "SEP"
+    },
+    {
+      "lexeme": "no",
+      "span": [
+        16,
+        18
+      ],
+      "type": "NEG_HARD",
+      "value": "HARD"
+    },
+    {
+      "lexeme": "horror",
+      "span": [
+        19,
+        25
+      ],
+      "type": "GENRE",
+      "value": [
+        "Horror"
+      ]
+    }
+  ]
+}

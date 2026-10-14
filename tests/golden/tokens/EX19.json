@@ -1,0 +1,43 @@
+{
+  "diagnostics": [],
+  "tokens": [
+    {
+      "lexeme": "top",
+      "span": [
+        0,
+        3
+      ],
+      "type": "LIMIT",
+      "value": "LIMIT"
+    },
+    {
+      "lexeme": "100",
+      "span": [
+        4,
+        7
+      ],
+      "type": "NUMBER",
+      "value": 100
+    },
+    {
+      "lexeme": "action",
+      "span": [
+        8,
+        14
+      ],
+      "type": "GENRE",
+      "value": [
+        "Action"
+      ]
+    },
+    {
+      "lexeme": "movies",
+      "span": [
+        15,
+        21
+      ],
+      "type": "ITEM",
+      "value": "ITEM"
+    }
+  ]
+}

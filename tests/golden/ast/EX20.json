@@ -1,0 +1,53 @@
+{
+  "ast": {
+    "clauses": [
+      {
+        "has_or": false,
+        "kind": "PreferenceClause",
+        "modifier": "NONE",
+        "node_id": 1,
+        "span": [
+          0,
+          26
+        ],
+        "terms": [
+          {
+            "kind": "DescriptorTerm",
+            "node_id": 2,
+            "span": [
+              0,
+              7
+            ],
+            "text": "kubrick"
+          },
+          {
+            "kind": "DescriptorTerm",
+            "node_id": 3,
+            "span": [
+              8,
+              13
+            ],
+            "text": "style"
+          },
+          {
+            "kind": "DescriptorTerm",
+            "node_id": 4,
+            "span": [
+              14,
+              19
+            ],
+            "text": "space"
+          }
+        ]
+      }
+    ],
+    "kind": "RequestNode",
+    "node_id": 0,
+    "source": "kubrick style space movies",
+    "span": [
+      0,
+      26
+    ]
+  },
+  "diagnostics": []
+}

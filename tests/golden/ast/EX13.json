@@ -1,0 +1,44 @@
+{
+  "ast": {
+    "clauses": [
+      {
+        "kind": "LimitClause",
+        "n": 3,
+        "node_id": 1,
+        "span": [
+          0,
+          9
+        ]
+      },
+      {
+        "has_or": false,
+        "kind": "PreferenceClause",
+        "modifier": "NONE",
+        "node_id": 2,
+        "span": [
+          10,
+          28
+        ],
+        "terms": [
+          {
+            "kind": "DescriptorTerm",
+            "node_id": 3,
+            "span": [
+              10,
+              21
+            ],
+            "text": "time travel"
+          }
+        ]
+      }
+    ],
+    "kind": "RequestNode",
+    "node_id": 0,
+    "source": "show me 3 time travel movies",
+    "span": [
+      0,
+      28
+    ]
+  },
+  "diagnostics": []
+}

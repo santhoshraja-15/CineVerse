@@ -13,7 +13,7 @@ import json
 import logging
 import re
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
@@ -240,7 +240,7 @@ def build_catalog(
             "votes": agg["votes"].astype("int32"),
             "bayes": agg["bayes"].astype("float32"),
             "embed_text": [
-                embed_text(t, g, tg, display) for t, g, tg in zip(titles, genres, tags)
+                embed_text(t, g, tg, display) for t, g, tg in zip(titles, genres, tags, strict=True)
             ],
         }
     )
@@ -280,7 +280,7 @@ def _download_date(raw_dir: Path) -> str | None:
     zip_path = raw_dir.parent / f"{DATASET_NAME}.zip"
     if not zip_path.is_file():
         return None
-    return datetime.fromtimestamp(zip_path.stat().st_mtime, tz=timezone.utc).date().isoformat()
+    return datetime.fromtimestamp(zip_path.stat().st_mtime, tz=UTC).date().isoformat()
 
 
 def check_row_drift(
@@ -343,14 +343,16 @@ def prepare(
     }
     manifest["catalog"] = {
         "rows": len(catalog),
-        "built": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "built": datetime.now(UTC).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "prepare_version": PREPARE_VERSION,
         "coverage": cov,
     }
     manifest_path.parent.mkdir(parents=True, exist_ok=True)
     manifest_path.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
 
-    return PrepareReport(rows=len(catalog), coverage=cov, orphans_dropped=orphans, warnings=warnings)
+    return PrepareReport(
+        rows=len(catalog), coverage=cov, orphans_dropped=orphans, warnings=warnings
+    )
 
 
 def main(argv: list[str] | None = None) -> int:

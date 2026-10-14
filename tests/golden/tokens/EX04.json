@@ -1,0 +1,55 @@
+{
+  "diagnostics": [],
+  "tokens": [
+    {
+      "lexeme": "only",
+      "span": [
+        0,
+        4
+      ],
+      "type": "STRICT",
+      "value": "HARD"
+    },
+    {
+      "lexeme": "comedies",
+      "span": [
+        5,
+        13
+      ],
+      "type": "GENRE",
+      "value": [
+        "Comedy"
+      ]
+    },
+    {
+      "lexeme": "in",
+      "span": [
+        14,
+        16
+      ],
+      "type": "FILLER",
+      "value": null
+    },
+    {
+      "lexeme": "the",
+      "span": [
+        17,
+        20
+      ],
+      "type": "FILLER",
+      "value": null
+    },
+    {
+      "lexeme": "90s",
+      "span": [
+        21,
+        24
+      ],
+      "type": "DECADE",
+      "value": [
+        1990,
+        1999
+      ]
+    }
+  ]
+}

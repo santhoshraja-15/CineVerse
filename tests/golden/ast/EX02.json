@@ -1,0 +1,74 @@
+{
+  "ast": {
+    "clauses": [
+      {
+        "has_or": false,
+        "kind": "PreferenceClause",
+        "modifier": "NONE",
+        "node_id": 1,
+        "span": [
+          2,
+          22
+        ],
+        "terms": [
+          {
+            "genres": [
+              "Comedy"
+            ],
+            "kind": "GenreTerm",
+            "node_id": 2,
+            "raw": "funny",
+            "span": [
+              2,
+              7
+            ]
+          },
+          {
+            "genres": [
+              "Animation"
+            ],
+            "kind": "GenreTerm",
+            "node_id": 3,
+            "raw": "animated",
+            "span": [
+              8,
+              16
+            ]
+          }
+        ]
+      },
+      {
+        "hedged": false,
+        "kind": "ExclusionClause",
+        "node_id": 4,
+        "span": [
+          24,
+          35
+        ],
+        "strength": "HARD",
+        "targets": [
+          {
+            "genres": [
+              "Musical"
+            ],
+            "kind": "GenreTerm",
+            "node_id": 5,
+            "raw": "musicals",
+            "span": [
+              27,
+              35
+            ]
+          }
+        ]
+      }
+    ],
+    "kind": "RequestNode",
+    "node_id": 0,
+    "source": "a funny animated movie, no musicals",
+    "span": [
+      0,
+      35
+    ]
+  },
+  "diagnostics": []
+}

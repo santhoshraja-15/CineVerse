@@ -1,0 +1,43 @@
+{
+  "diagnostics": [],
+  "tokens": [
+    {
+      "lexeme": "comedies",
+      "span": [
+        0,
+        8
+      ],
+      "type": "GENRE",
+      "value": [
+        "Comedy"
+      ]
+    },
+    {
+      "lexeme": "made",
+      "span": [
+        9,
+        13
+      ],
+      "type": "FIELD",
+      "value": "year"
+    },
+    {
+      "lexeme": "after",
+      "span": [
+        14,
+        19
+      ],
+      "type": "CMP",
+      "value": ">"
+    },
+    {
+      "lexeme": "2010",
+      "span": [
+        20,
+        24
+      ],
+      "type": "NUMBER",
+      "value": 2010
+    }
+  ]
+}

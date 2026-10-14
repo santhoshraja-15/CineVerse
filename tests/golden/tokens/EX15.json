@@ -1,0 +1,45 @@
+{
+  "diagnostics": [],
+  "tokens": [
+    {
+      "lexeme": "only",
+      "span": [
+        0,
+        4
+      ],
+      "type": "STRICT",
+      "value": "HARD"
+    },
+    {
+      "lexeme": "comedy",
+      "span": [
+        5,
+        11
+      ],
+      "type": "GENRE",
+      "value": [
+        "Comedy"
+      ]
+    },
+    {
+      "lexeme": "or",
+      "span": [
+        12,
+        14
+      ],
+      "type": "OR",
+      "value": "OR"
+    },
+    {
+      "lexeme": "drama",
+      "span": [
+        15,
+        20
+      ],
+      "type": "GENRE",
+      "value": [
+        "Drama"
+      ]
+    }
+  ]
+}

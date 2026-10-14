@@ -1,0 +1,110 @@
+{
+  "diagnostics": [],
+  "tokens": [
+    {
+      "lexeme": "thoughtful",
+      "span": [
+        0,
+        10
+      ],
+      "type": "DESCRIPTOR",
+      "value": "thoughtful"
+    },
+    {
+      "lexeme": "sci-fi",
+      "span": [
+        11,
+        17
+      ],
+      "type": "GENRE",
+      "value": [
+        "Sci-Fi"
+      ]
+    },
+    {
+      "lexeme": "mystery",
+      "span": [
+        18,
+        25
+      ],
+      "type": "GENRE",
+      "value": [
+        "Mystery"
+      ]
+    },
+    {
+      "lexeme": "after",
+      "span": [
+        26,
+        31
+      ],
+      "type": "CMP",
+      "value": ">"
+    },
+    {
+      "lexeme": "2010",
+      "span": [
+        32,
+        36
+      ],
+      "type": "NUMBER",
+      "value": 2010
+    },
+    {
+      "lexeme": ",",
+      "span": [
+        36,
+        37
+      ],
+      "type": "SEP",
+      "value": "SEP"
+    },
+    {
+      "lexeme": "little",
+      "span": [
+        38,
+        44
+      ],
+      "type": "NEG_SOFT",
+      "value": "SOFT"
+    },
+    {
+      "lexeme": "romance",
+      "span": [
+        45,
+        52
+      ],
+      "type": "GENRE",
+      "value": [
+        "Romance"
+      ]
+    },
+    {
+      "lexeme": ",",
+      "span": [
+        52,
+        53
+      ],
+      "type": "SEP",
+      "value": "SEP"
+    },
+    {
+      "lexeme": "top",
+      "span": [
+        54,
+        57
+      ],
+      "type": "LIMIT",
+      "value": "LIMIT"
+    },
+    {
+      "lexeme": "5",
+      "span": [
+        58,
+        59
+      ],
+      "type": "NUMBER",
+      "value": 5
+    }
+  ]
+}
