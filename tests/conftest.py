@@ -94,3 +94,35 @@ def runtime_cfg(soft_cfg: SoftConfig) -> RuntimeConfig:
         seed=42,
         sha256="test",
     )
+
+
+@pytest.fixture(scope="module")
+def toy_catalog_module() -> Catalog:
+    return Catalog(toy_columns())
+
+
+@pytest.fixture(scope="module")
+def runtime_cfg_module() -> RuntimeConfig:
+    return RuntimeConfig(
+        runtime_version="1.0", model_name="stub", index_backend="numpy", candidate_budget=200,
+        rrf_k=60, score_round_decimals=6, soft=SoftConfig(beta=0.10, lam=0.30, mu=0.20),
+        metadata=MetadataConfig(tag_match_weight=0.5, bayes_m=10), mmr_lambda=0.7, seed=42,
+        sha256="test",
+    )
+
+
+@pytest.fixture(scope="session")
+def full_ctx():
+    """Real catalogue, index and model (Testing Plan §6 full_ctx); skipped if not built."""
+    artifacts = ROOT / "artifacts"
+    needed = [ROOT / "data" / "processed" / "catalog.parquet", artifacts / "embeddings.npy",
+              artifacts / "ids.npy"]
+    missing = [str(p.relative_to(ROOT)) for p in needed if not p.is_file()]
+    if missing:
+        pytest.skip(f"real artifacts missing: {missing} (run prepare and build_index)")
+    from cineverse import default_runtime
+
+    ctx, registry = default_runtime()
+    if not ctx.caps.semantic_available:
+        pytest.skip("embedding model or index could not be loaded")
+    return ctx, registry
