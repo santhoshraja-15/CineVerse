@@ -1,0 +1,1851 @@
+{
+  "file": "CineVerse_Example_Requests_and_Expected_Outputs.json",
+  "spec_version": "1.0",
+  "how_to_use": [
+    "Tokens list non-FILLER tokens as TYPE(lexeme->value)[start,end); FILLER tokens are shown without spans.",
+    "ir is the canonical IR after passes O2 and O1, without span fields. Compare with CompiledQuery.to_json() minus spans.",
+    "ir_hash_prefix is the first 16 hex chars of sha256 over the canonical JSON of this example's ir without source, diagnostics and spans. Your implementation's hash must be equal for EX23 and EX24 and differ elsewhere; the exact value depends on your serialisation, so only equality is asserted.",
+    "program_unoptimized and program_optimized use the printed form of SPEC/IR specification section 'Printed form'. N = catalogue size; C = 200.",
+    "Movie titles are not listed: they depend on the downloaded MovieLens snapshot. result_properties are what tests assert.",
+    "Assumes the CORE build: semantic channel available, MMR not built, runtime and language unavailable."
+  ],
+  "examples": [
+    {
+      "id": "EX01",
+      "category": "combined",
+      "text": "thoughtful sci-fi mystery after 2010, little romance, top 5",
+      "expected": {
+        "ok": true,
+        "diagnostics": [],
+        "tokens": [
+          "DESCRIPTOR(thoughtful)[0,10)",
+          "GENRE(sci-fi->Sci-Fi)[11,17)",
+          "GENRE(mystery->Mystery)[18,25)",
+          "CMP(after->'>')[26,31)",
+          "NUMBER(2010)[32,36)",
+          "SEP(,)[36,37)",
+          "NEG_SOFT(little)[38,44)",
+          "GENRE(romance->Romance)[45,52)",
+          "SEP(,)[52,53)",
+          "LIMIT(top)[54,57)",
+          "NUMBER(5)[58,59)"
+        ],
+        "ir": {
+          "ir_version": "1.0",
+          "source": "thoughtful sci-fi mystery after 2010, little romance, top 5",
+          "semantic_text": "thoughtful science fiction mystery",
+          "preferences": [
+            {
+              "kind": "genre",
+              "value": "Mystery",
+              "polarity": 1
+            },
+            {
+              "kind": "genre",
+              "value": "Romance",
+              "polarity": -1
+            },
+            {
+              "kind": "genre",
+              "value": "Sci-Fi",
+              "polarity": 1
+            },
+            {
+              "kind": "text",
+              "value": "thoughtful",
+              "polarity": 1
+            }
+          ],
+          "constraints": [
+            {
+              "field": "year",
+              "op": ">=",
+              "value": 2011,
+              "strictness": "hard"
+            }
+          ],
+          "channels": {
+            "semantic": true,
+            "metadata": true
+          },
+          "ranking": {
+            "fusion": "rrf",
+            "rrf_k": 60,
+            "diversity": "none",
+            "mmr_lambda": 0.7
+          },
+          "output": {
+            "limit": 5,
+            "explain": true
+          },
+          "diagnostics": []
+        },
+        "ir_hash_prefix": "8db8671e02eb2e30",
+        "rules_fired": [
+          "O2: year > 2010 -> year >= 2011",
+          "O4: pushed MASK [year >= 2011] into a1, b1"
+        ],
+        "program_unoptimized": [
+          "%s0 = SCAN",
+          "%a1 = SEM_SEARCH \"thoughtful science fiction mystery\", %s0, c=N",
+          "%a2 = FILTER_LIST %a1, [year >= 2011], c=200",
+          "%b1 = META_SEARCH genres=[Mystery, Sci-Fi], terms=[thoughtful], %s0, c=N",
+          "%b2 = FILTER_LIST %b1, [year >= 2011], c=200",
+          "%f = RRF %a2, %b2, k=60",
+          "%r = SOFT %f, prefs=[genre:Mystery+, genre:Romance-, genre:Sci-Fi+, text:thoughtful+], soft=[]",
+          "%t = TOPK %r, n=5",
+          "%x = EXPLAIN %t",
+          "RET %x"
+        ],
+        "program_optimized": [
+          "%s0 = SCAN",
+          "%m1 = MASK %s0, [year >= 2011]",
+          "%a1 = SEM_SEARCH \"thoughtful science fiction mystery\", %m1, c=200",
+          "%b1 = META_SEARCH genres=[Mystery, Sci-Fi], terms=[thoughtful], %m1, c=200",
+          "%f = RRF %a1, %b1, k=60",
+          "%r = SOFT %f, prefs=[genre:Mystery+, genre:Romance-, genre:Sci-Fi+, text:thoughtful+], soft=[]",
+          "%t = TOPK %r, n=5",
+          "%x = EXPLAIN %t",
+          "RET %x"
+        ],
+        "result_properties": [
+          "exactly 5 results",
+          "every result has year >= 2011",
+          "results may contain Romance but each Romance movie carries a soft penalty of 0.30 in its trace"
+        ]
+      }
+    },
+    {
+      "id": "EX02",
+      "category": "hard_exclusion",
+      "text": "a funny animated movie, no musicals",
+      "expected": {
+        "ok": true,
+        "diagnostics": [],
+        "tokens": [
+          "FILLER(a)",
+          "GENRE(funny->Comedy)[2,7)",
+          "GENRE(animated->Animation)[8,16)",
+          "ITEM(movie)[17,22)",
+          "SEP(,)[22,23)",
+          "NEG_HARD(no)[24,26)",
+          "GENRE(musicals->Musical)[27,35)"
+        ],
+        "ir": {
+          "ir_version": "1.0",
+          "source": "a funny animated movie, no musicals",
+          "semantic_text": "comedy animation",
+          "preferences": [
+            {
+              "kind": "genre",
+              "value": "Animation",
+              "polarity": 1
+            },
+            {
+              "kind": "genre",
+              "value": "Comedy",
+              "polarity": 1
+            }
+          ],
+          "constraints": [
+            {
+              "field": "genre",
+              "op": "NOT_HAS",
+              "value": "Musical",
+              "strictness": "hard"
+            }
+          ],
+          "channels": {
+            "semantic": true,
+            "metadata": true
+          },
+          "ranking": {
+            "fusion": "rrf",
+            "rrf_k": 60,
+            "diversity": "none",
+            "mmr_lambda": 0.7
+          },
+          "output": {
+            "limit": 10,
+            "explain": true
+          },
+          "diagnostics": []
+        },
+        "ir_hash_prefix": "93724e92d832194a",
+        "rules_fired": [
+          "O4: pushed MASK [genre NOT_HAS Musical] into a1, b1"
+        ],
+        "program_unoptimized": [
+          "%s0 = SCAN",
+          "%a1 = SEM_SEARCH \"comedy animation\", %s0, c=N",
+          "%a2 = FILTER_LIST %a1, [genre NOT_HAS Musical], c=200",
+          "%b1 = META_SEARCH genres=[Animation, Comedy], terms=[], %s0, c=N",
+          "%b2 = FILTER_LIST %b1, [genre NOT_HAS Musical], c=200",
+          "%f = RRF %a2, %b2, k=60",
+          "%r = SOFT %f, prefs=[genre:Animation+, genre:Comedy+], soft=[]",
+          "%t = TOPK %r, n=10",
+          "%x = EXPLAIN %t",
+          "RET %x"
+        ],
+        "program_optimized": [
+          "%s0 = SCAN",
+          "%m1 = MASK %s0, [genre NOT_HAS Musical]",
+          "%a1 = SEM_SEARCH \"comedy animation\", %m1, c=200",
+          "%b1 = META_SEARCH genres=[Animation, Comedy], terms=[], %m1, c=200",
+          "%f = RRF %a1, %b1, k=60",
+          "%r = SOFT %f, prefs=[genre:Animation+, genre:Comedy+], soft=[]",
+          "%t = TOPK %r, n=10",
+          "%x = EXPLAIN %t",
+          "RET %x"
+        ],
+        "result_properties": [
+          "10 results",
+          "no result has genre Musical",
+          "most results have Animation and/or Comedy"
+        ]
+      }
+    },
+    {
+      "id": "EX03",
+      "category": "hard_exclusion_only",
+      "text": "no romance",
+      "expected": {
+        "ok": true,
+        "diagnostics": [],
+        "tokens": [
+          "NEG_HARD(no)[0,2)",
+          "GENRE(romance->Romance)[3,10)"
+        ],
+        "ir": {
+          "ir_version": "1.0",
+          "source": "no romance",
+          "semantic_text": "",
+          "preferences": [],
+          "constraints": [
+            {
+              "field": "genre",
+              "op": "NOT_HAS",
+              "value": "Romance",
+              "strictness": "hard"
+            }
+          ],
+          "channels": {
+            "semantic": true,
+            "metadata": true
+          },
+          "ranking": {
+            "fusion": "rrf",
+            "rrf_k": 60,
+            "diversity": "none",
+            "mmr_lambda": 0.7
+          },
+          "output": {
+            "limit": 10,
+            "explain": true
+          },
+          "diagnostics": []
+        },
+        "ir_hash_prefix": "66f054a38420fb6a",
+        "rules_fired": [
+          "O3: removed a1 (SemanticSearch) and a2",
+          "O3: removed b1 (MetadataSearch) and b2",
+          "O4: pushed MASK [genre NOT_HAS Romance] into p1"
+        ],
+        "program_unoptimized": [
+          "%s0 = SCAN",
+          "%a1 = SEM_SEARCH \"\", %s0, c=N",
+          "%a2 = FILTER_LIST %a1, [genre NOT_HAS Romance], c=200",
+          "%b1 = META_SEARCH genres=[], terms=[], %s0, c=N",
+          "%b2 = FILTER_LIST %b1, [genre NOT_HAS Romance], c=200",
+          "%p1 = POP_RANK %s0, c=N",
+          "%p2 = FILTER_LIST %p1, [genre NOT_HAS Romance], c=200",
+          "%f = RRF %a2, %b2, %p2, k=60",
+          "%r = SOFT %f, prefs=[], soft=[]",
+          "%t = TOPK %r, n=10",
+          "%x = EXPLAIN %t",
+          "RET %x"
+        ],
+        "program_optimized": [
+          "%s0 = SCAN",
+          "%m1 = MASK %s0, [genre NOT_HAS Romance]",
+          "%p1 = POP_RANK %m1, c=200",
+          "%f = RRF %p1, k=60",
+          "%r = SOFT %f, prefs=[], soft=[]",
+          "%t = TOPK %r, n=10",
+          "%x = EXPLAIN %t",
+          "RET %x"
+        ],
+        "result_properties": [
+          "10 results ranked by Bayesian rating",
+          "no result has genre Romance"
+        ]
+      },
+      "notes": "No positive preference, so the planner adds POP_RANK; O3 removes the empty semantic and metadata searches."
+    },
+    {
+      "id": "EX04",
+      "category": "hard_genre_decade",
+      "text": "only comedies in the 90s",
+      "expected": {
+        "ok": true,
+        "diagnostics": [],
+        "tokens": [
+          "STRICT(only)[0,4)",
+          "GENRE(comedies->Comedy)[5,13)",
+          "FILLER(in)",
+          "FILLER(the)",
+          "DECADE(90s->1990..1999)[21,24)"
+        ],
+        "ir": {
+          "ir_version": "1.0",
+          "source": "only comedies in the 90s",
+          "semantic_text": "comedy",
+          "preferences": [],
+          "constraints": [
+            {
+              "field": "genre",
+              "op": "HAS",
+              "value": "Comedy",
+              "strictness": "hard"
+            },
+            {
+              "field": "year",
+              "op": "<=",
+              "value": 1999,
+              "strictness": "hard"
+            },
+            {
+              "field": "year",
+              "op": ">=",
+              "value": 1990,
+              "strictness": "hard"
+            }
+          ],
+          "channels": {
+            "semantic": true,
+            "metadata": true
+          },
+          "ranking": {
+            "fusion": "rrf",
+            "rrf_k": 60,
+            "diversity": "none",
+            "mmr_lambda": 0.7
+          },
+          "output": {
+            "limit": 10,
+            "explain": true
+          },
+          "diagnostics": []
+        },
+        "ir_hash_prefix": "9edce80ec892e95f",
+        "rules_fired": [
+          "O4: pushed MASK [genre HAS Comedy, year <= 1999, year >= 1990] into a1, b1"
+        ],
+        "program_unoptimized": [
+          "%s0 = SCAN",
+          "%a1 = SEM_SEARCH \"comedy\", %s0, c=N",
+          "%a2 = FILTER_LIST %a1, [genre HAS Comedy, year <= 1999, year >= 1990], c=200",
+          "%b1 = META_SEARCH genres=[Comedy], terms=[], %s0, c=N",
+          "%b2 = FILTER_LIST %b1, [genre HAS Comedy, year <= 1999, year >= 1990], c=200",
+          "%f = RRF %a2, %b2, k=60",
+          "%r = SOFT %f, prefs=[], soft=[]",
+          "%t = TOPK %r, n=10",
+          "%x = EXPLAIN %t",
+          "RET %x"
+        ],
+        "program_optimized": [
+          "%s0 = SCAN",
+          "%m1 = MASK %s0, [genre HAS Comedy, year <= 1999, year >= 1990]",
+          "%a1 = SEM_SEARCH \"comedy\", %m1, c=200",
+          "%b1 = META_SEARCH genres=[Comedy], terms=[], %m1, c=200",
+          "%f = RRF %a1, %b1, k=60",
+          "%r = SOFT %f, prefs=[], soft=[]",
+          "%t = TOPK %r, n=10",
+          "%x = EXPLAIN %t",
+          "RET %x"
+        ],
+        "result_properties": [
+          "every result has genre Comedy",
+          "every result has 1990 <= year <= 1999"
+        ]
+      }
+    },
+    {
+      "id": "EX05",
+      "category": "between_rating",
+      "text": "heist movies between 2000 and 2010 rated at least 4 stars",
+      "expected": {
+        "ok": true,
+        "diagnostics": [],
+        "tokens": [
+          "DESCRIPTOR(heist)[0,5)",
+          "ITEM(movies)[6,12)",
+          "BETWEEN(between)[13,20)",
+          "NUMBER(2000)[21,25)",
+          "SEP(and)[26,29)",
+          "NUMBER(2010)[30,34)",
+          "FIELD(rated->rating)[35,40)",
+          "CMP(at least->'>=')[41,49)",
+          "NUMBER(4)[50,51)",
+          "UNIT(stars)[52,57)"
+        ],
+        "ir": {
+          "ir_version": "1.0",
+          "source": "heist movies between 2000 and 2010 rated at least 4 stars",
+          "semantic_text": "heist",
+          "preferences": [
+            {
+              "kind": "text",
+              "value": "heist",
+              "polarity": 1
+            }
+          ],
+          "constraints": [
+            {
+              "field": "rating",
+              "op": ">=",
+              "value": 4.0,
+              "strictness": "hard"
+            },
+            {
+              "field": "year",
+              "op": "<=",
+              "value": 2010,
+              "strictness": "hard"
+            },
+            {
+              "field": "year",
+              "op": ">=",
+              "value": 2000,
+              "strictness": "hard"
+            }
+          ],
+          "channels": {
+            "semantic": true,
+            "metadata": true
+          },
+          "ranking": {
+            "fusion": "rrf",
+            "rrf_k": 60,
+            "diversity": "none",
+            "mmr_lambda": 0.7
+          },
+          "output": {
+            "limit": 10,
+            "explain": true
+          },
+          "diagnostics": []
+        },
+        "ir_hash_prefix": "1cd2ec3659ed6d24",
+        "rules_fired": [
+          "O4: pushed MASK [rating >= 4.0, year <= 2010, year >= 2000] into a1, b1"
+        ],
+        "program_unoptimized": [
+          "%s0 = SCAN",
+          "%a1 = SEM_SEARCH \"heist\", %s0, c=N",
+          "%a2 = FILTER_LIST %a1, [rating >= 4.0, year <= 2010, year >= 2000], c=200",
+          "%b1 = META_SEARCH genres=[], terms=[heist], %s0, c=N",
+          "%b2 = FILTER_LIST %b1, [rating >= 4.0, year <= 2010, year >= 2000], c=200",
+          "%f = RRF %a2, %b2, k=60",
+          "%r = SOFT %f, prefs=[text:heist+], soft=[]",
+          "%t = TOPK %r, n=10",
+          "%x = EXPLAIN %t",
+          "RET %x"
+        ],
+        "program_optimized": [
+          "%s0 = SCAN",
+          "%m1 = MASK %s0, [rating >= 4.0, year <= 2010, year >= 2000]",
+          "%a1 = SEM_SEARCH \"heist\", %m1, c=200",
+          "%b1 = META_SEARCH genres=[], terms=[heist], %m1, c=200",
+          "%f = RRF %a1, %b1, k=60",
+          "%r = SOFT %f, prefs=[text:heist+], soft=[]",
+          "%t = TOPK %r, n=10",
+          "%x = EXPLAIN %t",
+          "RET %x"
+        ],
+        "result_properties": [
+          "every result has 2000 <= year <= 2010",
+          "every result has mean rating >= 4.0 (movies with no ratings excluded)"
+        ]
+      }
+    },
+    {
+      "id": "EX06",
+      "category": "hedged_constraint",
+      "text": "preferably after 2000, dark thriller",
+      "expected": {
+        "ok": true,
+        "diagnostics": [],
+        "tokens": [
+          "HEDGE(preferably)[0,10)",
+          "CMP(after->'>')[11,16)",
+          "NUMBER(2000)[17,21)",
+          "SEP(,)[21,22)",
+          "DESCRIPTOR(dark)[23,27)",
+          "GENRE(thriller->Thriller)[28,36)"
+        ],
+        "ir": {
+          "ir_version": "1.0",
+          "source": "preferably after 2000, dark thriller",
+          "semantic_text": "dark thriller",
+          "preferences": [
+            {
+              "kind": "genre",
+              "value": "Thriller",
+              "polarity": 1
+            },
+            {
+              "kind": "text",
+              "value": "dark",
+              "polarity": 1
+            }
+          ],
+          "constraints": [
+            {
+              "field": "year",
+              "op": ">=",
+              "value": 2001,
+              "strictness": "soft"
+            }
+          ],
+          "channels": {
+            "semantic": true,
+            "metadata": true
+          },
+          "ranking": {
+            "fusion": "rrf",
+            "rrf_k": 60,
+            "diversity": "none",
+            "mmr_lambda": 0.7
+          },
+          "output": {
+            "limit": 10,
+            "explain": true
+          },
+          "diagnostics": []
+        },
+        "ir_hash_prefix": "8747a74c98e593c5",
+        "rules_fired": [
+          "O2: year > 2000 -> year >= 2001 (soft)",
+          "O4: pushed truncation into a1, b1"
+        ],
+        "program_unoptimized": [
+          "%s0 = SCAN",
+          "%a1 = SEM_SEARCH \"dark thriller\", %s0, c=N",
+          "%a2 = FILTER_LIST %a1, [], c=200",
+          "%b1 = META_SEARCH genres=[Thriller], terms=[dark], %s0, c=N",
+          "%b2 = FILTER_LIST %b1, [], c=200",
+          "%f = RRF %a2, %b2, k=60",
+          "%r = SOFT %f, prefs=[genre:Thriller+, text:dark+], soft=[year >= 2001]",
+          "%t = TOPK %r, n=10",
+          "%x = EXPLAIN %t",
+          "RET %x"
+        ],
+        "program_optimized": [
+          "%s0 = SCAN",
+          "%a1 = SEM_SEARCH \"dark thriller\", %s0, c=200",
+          "%b1 = META_SEARCH genres=[Thriller], terms=[dark], %s0, c=200",
+          "%f = RRF %a1, %b1, k=60",
+          "%r = SOFT %f, prefs=[genre:Thriller+, text:dark+], soft=[year >= 2001]",
+          "%t = TOPK %r, n=10",
+          "%x = EXPLAIN %t",
+          "RET %x"
+        ],
+        "result_properties": [
+          "older movies may appear but carry a soft penalty of 0.20",
+          "no MASK: there is no hard constraint"
+        ]
+      }
+    },
+    {
+      "id": "EX07",
+      "category": "unavailable_field",
+      "text": "comedy under 2 hours",
+      "expected": {
+        "ok": true,
+        "diagnostics": [
+          "S112",
+          "S105"
+        ],
+        "tokens": [
+          "GENRE(comedy->Comedy)[0,6)",
+          "CMP(under->'<')[7,12)",
+          "NUMBER(2)[13,14)",
+          "UNIT(hours)[15,20)"
+        ],
+        "ir": {
+          "ir_version": "1.0",
+          "source": "comedy under 2 hours",
+          "semantic_text": "comedy",
+          "preferences": [
+            {
+              "kind": "genre",
+              "value": "Comedy",
+              "polarity": 1
+            }
+          ],
+          "constraints": [],
+          "channels": {
+            "semantic": true,
+            "metadata": true
+          },
+          "ranking": {
+            "fusion": "rrf",
+            "rrf_k": 60,
+            "diversity": "none",
+            "mmr_lambda": 0.7
+          },
+          "output": {
+            "limit": 10,
+            "explain": true
+          },
+          "diagnostics": [
+            "S112",
+            "S105"
+          ]
+        },
+        "ir_hash_prefix": "0cdda2ef05604568",
+        "rules_fired": [
+          "O4: pushed truncation into a1, b1"
+        ],
+        "program_unoptimized": [
+          "%s0 = SCAN",
+          "%a1 = SEM_SEARCH \"comedy\", %s0, c=N",
+          "%a2 = FILTER_LIST %a1, [], c=200",
+          "%b1 = META_SEARCH genres=[Comedy], terms=[], %s0, c=N",
+          "%b2 = FILTER_LIST %b1, [], c=200",
+          "%f = RRF %a2, %b2, k=60",
+          "%r = SOFT %f, prefs=[genre:Comedy+], soft=[]",
+          "%t = TOPK %r, n=10",
+          "%x = EXPLAIN %t",
+          "RET %x"
+        ],
+        "program_optimized": [
+          "%s0 = SCAN",
+          "%a1 = SEM_SEARCH \"comedy\", %s0, c=200",
+          "%b1 = META_SEARCH genres=[Comedy], terms=[], %s0, c=200",
+          "%f = RRF %a1, %b1, k=60",
+          "%r = SOFT %f, prefs=[genre:Comedy+], soft=[]",
+          "%t = TOPK %r, n=10",
+          "%x = EXPLAIN %t",
+          "RET %x"
+        ],
+        "result_properties": [
+          "runtime condition shown as not applied",
+          "results are comedies ranked without any runtime filter"
+        ]
+      },
+      "notes": "2 hours is converted to 120 minutes (S112); runtime is unavailable in MovieLens (S105), so no constraint is lowered."
+    },
+    {
+      "id": "EX08",
+      "category": "contradiction",
+      "text": "only horror and no horror",
+      "expected": {
+        "ok": false,
+        "diagnostics": [
+          "S107"
+        ],
+        "tokens": [
+          "STRICT(only)[0,4)",
+          "GENRE(horror->Horror)[5,11)",
+          "SEP(and)[12,15)",
+          "NEG_HARD(no)[16,18)",
+          "GENRE(horror->Horror)[19,25)"
+        ],
+        "ir": null,
+        "executed": false
+      },
+      "notes": "Compilation stops after semantic analysis; nothing is executed."
+    },
+    {
+      "id": "EX09",
+      "category": "empty_range",
+      "text": "after 2015 before 2000",
+      "expected": {
+        "ok": false,
+        "diagnostics": [
+          "S108"
+        ],
+        "tokens": [
+          "CMP(after->'>')[0,5)",
+          "NUMBER(2015)[6,10)",
+          "CMP(before->'<')[11,17)",
+          "NUMBER(2000)[18,22)"
+        ],
+        "ir": null,
+        "executed": false
+      }
+    },
+    {
+      "id": "EX10",
+      "category": "out_of_range",
+      "text": "rated above 9",
+      "expected": {
+        "ok": false,
+        "diagnostics": [
+          "S104"
+        ],
+        "tokens": [
+          "FIELD(rated->rating)[0,5)",
+          "CMP(above->'>')[6,11)",
+          "NUMBER(9)[12,13)"
+        ],
+        "ir": null,
+        "executed": false
+      },
+      "notes": "Ratings are 0.5-5.0."
+    },
+    {
+      "id": "EX11",
+      "category": "empty",
+      "text": "something please",
+      "expected": {
+        "ok": false,
+        "diagnostics": [
+          "S111"
+        ],
+        "tokens": [
+          "FILLER(something)",
+          "FILLER(please)"
+        ],
+        "ir": null,
+        "executed": false
+      }
+    },
+    {
+      "id": "EX12",
+      "category": "unverifiable_exclusion",
+      "text": "no gore",
+      "expected": {
+        "ok": true,
+        "diagnostics": [
+          "S106"
+        ],
+        "tokens": [
+          "NEG_HARD(no)[0,2)",
+          "DESCRIPTOR(gore)[3,7)"
+        ],
+        "ir": {
+          "ir_version": "1.0",
+          "source": "no gore",
+          "semantic_text": "",
+          "preferences": [
+            {
+              "kind": "text",
+              "value": "gore",
+              "polarity": -1
+            }
+          ],
+          "constraints": [],
+          "channels": {
+            "semantic": true,
+            "metadata": true
+          },
+          "ranking": {
+            "fusion": "rrf",
+            "rrf_k": 60,
+            "diversity": "none",
+            "mmr_lambda": 0.7
+          },
+          "output": {
+            "limit": 10,
+            "explain": true
+          },
+          "diagnostics": [
+            "S106"
+          ]
+        },
+        "ir_hash_prefix": "7c666d08143a791f",
+        "rules_fired": [
+          "O3: removed a1 (SemanticSearch) and a2",
+          "O3: removed b1 (MetadataSearch) and b2",
+          "O4: pushed truncation into p1"
+        ],
+        "program_unoptimized": [
+          "%s0 = SCAN",
+          "%a1 = SEM_SEARCH \"\", %s0, c=N",
+          "%a2 = FILTER_LIST %a1, [], c=200",
+          "%b1 = META_SEARCH genres=[], terms=[], %s0, c=N",
+          "%b2 = FILTER_LIST %b1, [], c=200",
+          "%p1 = POP_RANK %s0, c=N",
+          "%p2 = FILTER_LIST %p1, [], c=200",
+          "%f = RRF %a2, %b2, %p2, k=60",
+          "%r = SOFT %f, prefs=[text:gore-], soft=[]",
+          "%t = TOPK %r, n=10",
+          "%x = EXPLAIN %t",
+          "RET %x"
+        ],
+        "program_optimized": [
+          "%s0 = SCAN",
+          "%p1 = POP_RANK %s0, c=200",
+          "%f = RRF %p1, k=60",
+          "%r = SOFT %f, prefs=[text:gore-], soft=[]",
+          "%t = TOPK %r, n=10",
+          "%x = EXPLAIN %t",
+          "RET %x"
+        ],
+        "result_properties": [
+          "10 results ranked by popularity",
+          "movies tagged with 'gore' carry a soft penalty of 0.30"
+        ]
+      },
+      "notes": "A descriptor has no field to check, so the hard exclusion is downgraded to a soft penalty."
+    },
+    {
+      "id": "EX13",
+      "category": "limit",
+      "text": "show me 3 time travel movies",
+      "expected": {
+        "ok": true,
+        "diagnostics": [],
+        "tokens": [
+          "LIMIT(show me)[0,7)",
+          "NUMBER(3)[8,9)",
+          "DESCRIPTOR(time travel)[10,21)",
+          "ITEM(movies)[22,28)"
+        ],
+        "ir": {
+          "ir_version": "1.0",
+          "source": "show me 3 time travel movies",
+          "semantic_text": "time travel",
+          "preferences": [
+            {
+              "kind": "text",
+              "value": "time travel",
+              "polarity": 1
+            }
+          ],
+          "constraints": [],
+          "channels": {
+            "semantic": true,
+            "metadata": true
+          },
+          "ranking": {
+            "fusion": "rrf",
+            "rrf_k": 60,
+            "diversity": "none",
+            "mmr_lambda": 0.7
+          },
+          "output": {
+            "limit": 3,
+            "explain": true
+          },
+          "diagnostics": []
+        },
+        "ir_hash_prefix": "dc82dbca6abbe887",
+        "rules_fired": [
+          "O4: pushed truncation into a1, b1"
+        ],
+        "program_unoptimized": [
+          "%s0 = SCAN",
+          "%a1 = SEM_SEARCH \"time travel\", %s0, c=N",
+          "%a2 = FILTER_LIST %a1, [], c=200",
+          "%b1 = META_SEARCH genres=[], terms=[time travel], %s0, c=N",
+          "%b2 = FILTER_LIST %b1, [], c=200",
+          "%f = RRF %a2, %b2, k=60",
+          "%r = SOFT %f, prefs=[text:time travel+], soft=[]",
+          "%t = TOPK %r, n=3",
+          "%x = EXPLAIN %t",
+          "RET %x"
+        ],
+        "program_optimized": [
+          "%s0 = SCAN",
+          "%a1 = SEM_SEARCH \"time travel\", %s0, c=200",
+          "%b1 = META_SEARCH genres=[], terms=[time travel], %s0, c=200",
+          "%f = RRF %a1, %b1, k=60",
+          "%r = SOFT %f, prefs=[text:time travel+], soft=[]",
+          "%t = TOPK %r, n=3",
+          "%x = EXPLAIN %t",
+          "RET %x"
+        ],
+        "result_properties": [
+          "exactly 3 results"
+        ]
+      }
+    },
+    {
+      "id": "EX14",
+      "category": "votes_alias_expansion",
+      "text": "rom-com, at least 100 ratings",
+      "expected": {
+        "ok": true,
+        "diagnostics": [],
+        "tokens": [
+          "GENRE(rom-com->Romance,Comedy)[0,7)",
+          "SEP(,)[7,8)",
+          "CMP(at least->'>=')[9,17)",
+          "NUMBER(100)[18,21)",
+          "UNIT(ratings)[22,29)"
+        ],
+        "ir": {
+          "ir_version": "1.0",
+          "source": "rom-com, at least 100 ratings",
+          "semantic_text": "romance comedy",
+          "preferences": [
+            {
+              "kind": "genre",
+              "value": "Comedy",
+              "polarity": 1
+            },
+            {
+              "kind": "genre",
+              "value": "Romance",
+              "polarity": 1
+            }
+          ],
+          "constraints": [
+            {
+              "field": "votes",
+              "op": ">=",
+              "value": 100,
+              "strictness": "hard"
+            }
+          ],
+          "channels": {
+            "semantic": true,
+            "metadata": true
+          },
+          "ranking": {
+            "fusion": "rrf",
+            "rrf_k": 60,
+            "diversity": "none",
+            "mmr_lambda": 0.7
+          },
+          "output": {
+            "limit": 10,
+            "explain": true
+          },
+          "diagnostics": []
+        },
+        "ir_hash_prefix": "8f45093704c7e785",
+        "rules_fired": [
+          "O4: pushed MASK [votes >= 100] into a1, b1"
+        ],
+        "program_unoptimized": [
+          "%s0 = SCAN",
+          "%a1 = SEM_SEARCH \"romance comedy\", %s0, c=N",
+          "%a2 = FILTER_LIST %a1, [votes >= 100], c=200",
+          "%b1 = META_SEARCH genres=[Comedy, Romance], terms=[], %s0, c=N",
+          "%b2 = FILTER_LIST %b1, [votes >= 100], c=200",
+          "%f = RRF %a2, %b2, k=60",
+          "%r = SOFT %f, prefs=[genre:Comedy+, genre:Romance+], soft=[]",
+          "%t = TOPK %r, n=10",
+          "%x = EXPLAIN %t",
+          "RET %x"
+        ],
+        "program_optimized": [
+          "%s0 = SCAN",
+          "%m1 = MASK %s0, [votes >= 100]",
+          "%a1 = SEM_SEARCH \"romance comedy\", %m1, c=200",
+          "%b1 = META_SEARCH genres=[Comedy, Romance], terms=[], %m1, c=200",
+          "%f = RRF %a1, %b1, k=60",
+          "%r = SOFT %f, prefs=[genre:Comedy+, genre:Romance+], soft=[]",
+          "%t = TOPK %r, n=10",
+          "%x = EXPLAIN %t",
+          "RET %x"
+        ],
+        "result_properties": [
+          "every result has at least 100 ratings"
+        ]
+      }
+    },
+    {
+      "id": "EX15",
+      "category": "strict_or",
+      "text": "only comedy or drama",
+      "expected": {
+        "ok": true,
+        "diagnostics": [
+          "S114"
+        ],
+        "tokens": [
+          "STRICT(only)[0,4)",
+          "GENRE(comedy->Comedy)[5,11)",
+          "OR(or)[12,14)",
+          "GENRE(drama->Drama)[15,20)"
+        ],
+        "ir": {
+          "ir_version": "1.0",
+          "source": "only comedy or drama",
+          "semantic_text": "comedy drama",
+          "preferences": [
+            {
+              "kind": "genre",
+              "value": "Comedy",
+              "polarity": 1
+            },
+            {
+              "kind": "genre",
+              "value": "Drama",
+              "polarity": 1
+            }
+          ],
+          "constraints": [],
+          "channels": {
+            "semantic": true,
+            "metadata": true
+          },
+          "ranking": {
+            "fusion": "rrf",
+            "rrf_k": 60,
+            "diversity": "none",
+            "mmr_lambda": 0.7
+          },
+          "output": {
+            "limit": 10,
+            "explain": true
+          },
+          "diagnostics": [
+            "S114"
+          ]
+        },
+        "ir_hash_prefix": "08590236259d0ede",
+        "rules_fired": [
+          "O4: pushed truncation into a1, b1"
+        ],
+        "program_unoptimized": [
+          "%s0 = SCAN",
+          "%a1 = SEM_SEARCH \"comedy drama\", %s0, c=N",
+          "%a2 = FILTER_LIST %a1, [], c=200",
+          "%b1 = META_SEARCH genres=[Comedy, Drama], terms=[], %s0, c=N",
+          "%b2 = FILTER_LIST %b1, [], c=200",
+          "%f = RRF %a2, %b2, k=60",
+          "%r = SOFT %f, prefs=[genre:Comedy+, genre:Drama+], soft=[]",
+          "%t = TOPK %r, n=10",
+          "%x = EXPLAIN %t",
+          "RET %x"
+        ],
+        "program_optimized": [
+          "%s0 = SCAN",
+          "%a1 = SEM_SEARCH \"comedy drama\", %s0, c=200",
+          "%b1 = META_SEARCH genres=[Comedy, Drama], terms=[], %s0, c=200",
+          "%f = RRF %a1, %b1, k=60",
+          "%r = SOFT %f, prefs=[genre:Comedy+, genre:Drama+], soft=[]",
+          "%t = TOPK %r, n=10",
+          "%x = EXPLAIN %t",
+          "RET %x"
+        ],
+        "result_properties": [
+          "comedies and dramas boosted; no strict genre filter"
+        ]
+      }
+    },
+    {
+      "id": "EX16",
+      "category": "diversity_unavailable",
+      "text": "diverse feel-good comedies",
+      "expected": {
+        "ok": true,
+        "diagnostics": [
+          "S105"
+        ],
+        "tokens": [
+          "DIVERSE(diverse)[0,7)",
+          "DESCRIPTOR(feel-good)[8,17)",
+          "GENRE(comedies->Comedy)[18,26)"
+        ],
+        "ir": {
+          "ir_version": "1.0",
+          "source": "diverse feel-good comedies",
+          "semantic_text": "feel-good comedy",
+          "preferences": [
+            {
+              "kind": "genre",
+              "value": "Comedy",
+              "polarity": 1
+            },
+            {
+              "kind": "text",
+              "value": "feel-good",
+              "polarity": 1
+            }
+          ],
+          "constraints": [],
+          "channels": {
+            "semantic": true,
+            "metadata": true
+          },
+          "ranking": {
+            "fusion": "rrf",
+            "rrf_k": 60,
+            "diversity": "none",
+            "mmr_lambda": 0.7
+          },
+          "output": {
+            "limit": 10,
+            "explain": true
+          },
+          "diagnostics": [
+            "S105"
+          ]
+        },
+        "ir_hash_prefix": "4b4e14dd919cbe53",
+        "rules_fired": [
+          "O4: pushed truncation into a1, b1"
+        ],
+        "program_unoptimized": [
+          "%s0 = SCAN",
+          "%a1 = SEM_SEARCH \"feel-good comedy\", %s0, c=N",
+          "%a2 = FILTER_LIST %a1, [], c=200",
+          "%b1 = META_SEARCH genres=[Comedy], terms=[feel-good], %s0, c=N",
+          "%b2 = FILTER_LIST %b1, [], c=200",
+          "%f = RRF %a2, %b2, k=60",
+          "%r = SOFT %f, prefs=[genre:Comedy+, text:feel-good+], soft=[]",
+          "%t = TOPK %r, n=10",
+          "%x = EXPLAIN %t",
+          "RET %x"
+        ],
+        "program_optimized": [
+          "%s0 = SCAN",
+          "%a1 = SEM_SEARCH \"feel-good comedy\", %s0, c=200",
+          "%b1 = META_SEARCH genres=[Comedy], terms=[feel-good], %s0, c=200",
+          "%f = RRF %a1, %b1, k=60",
+          "%r = SOFT %f, prefs=[genre:Comedy+, text:feel-good+], soft=[]",
+          "%t = TOPK %r, n=10",
+          "%x = EXPLAIN %t",
+          "RET %x"
+        ],
+        "result_properties": [
+          "served without diversification in the CORE build"
+        ]
+      },
+      "notes": "With the OPTIONAL MMR module built, ranking.diversity becomes 'mmr', S105 disappears and %d = MMR is emitted before TOPK."
+    },
+    {
+      "id": "EX17",
+      "category": "soft_exclusion_descriptor",
+      "text": "not too violent crime drama",
+      "expected": {
+        "ok": true,
+        "diagnostics": [],
+        "tokens": [
+          "NEG_SOFT(not too)[0,7)",
+          "DESCRIPTOR(violent)[8,15)",
+          "GENRE(crime->Crime)[16,21)",
+          "GENRE(drama->Drama)[22,27)"
+        ],
+        "ir": {
+          "ir_version": "1.0",
+          "source": "not too violent crime drama",
+          "semantic_text": "crime drama",
+          "preferences": [
+            {
+              "kind": "genre",
+              "value": "Crime",
+              "polarity": 1
+            },
+            {
+              "kind": "genre",
+              "value": "Drama",
+              "polarity": 1
+            },
+            {
+              "kind": "text",
+              "value": "violent",
+              "polarity": -1
+            }
+          ],
+          "constraints": [],
+          "channels": {
+            "semantic": true,
+            "metadata": true
+          },
+          "ranking": {
+            "fusion": "rrf",
+            "rrf_k": 60,
+            "diversity": "none",
+            "mmr_lambda": 0.7
+          },
+          "output": {
+            "limit": 10,
+            "explain": true
+          },
+          "diagnostics": []
+        },
+        "ir_hash_prefix": "94762e92e24c0410",
+        "rules_fired": [
+          "O4: pushed truncation into a1, b1"
+        ],
+        "program_unoptimized": [
+          "%s0 = SCAN",
+          "%a1 = SEM_SEARCH \"crime drama\", %s0, c=N",
+          "%a2 = FILTER_LIST %a1, [], c=200",
+          "%b1 = META_SEARCH genres=[Crime, Drama], terms=[], %s0, c=N",
+          "%b2 = FILTER_LIST %b1, [], c=200",
+          "%f = RRF %a2, %b2, k=60",
+          "%r = SOFT %f, prefs=[genre:Crime+, genre:Drama+, text:violent-], soft=[]",
+          "%t = TOPK %r, n=10",
+          "%x = EXPLAIN %t",
+          "RET %x"
+        ],
+        "program_optimized": [
+          "%s0 = SCAN",
+          "%a1 = SEM_SEARCH \"crime drama\", %s0, c=200",
+          "%b1 = META_SEARCH genres=[Crime, Drama], terms=[], %s0, c=200",
+          "%f = RRF %a1, %b1, k=60",
+          "%r = SOFT %f, prefs=[genre:Crime+, genre:Drama+, text:violent-], soft=[]",
+          "%t = TOPK %r, n=10",
+          "%x = EXPLAIN %t",
+          "RET %x"
+        ],
+        "result_properties": [
+          "movies tagged 'violent' carry a soft penalty; none are removed"
+        ]
+      }
+    },
+    {
+      "id": "EX18",
+      "category": "hedged_hard_exclusion",
+      "text": "ideally no horror, mystery",
+      "expected": {
+        "ok": true,
+        "diagnostics": [],
+        "tokens": [
+          "HEDGE(ideally)[0,7)",
+          "NEG_HARD(no)[8,10)",
+          "GENRE(horror->Horror)[11,17)",
+          "SEP(,)[17,18)",
+          "GENRE(mystery->Mystery)[19,26)"
+        ],
+        "ir": {
+          "ir_version": "1.0",
+          "source": "ideally no horror, mystery",
+          "semantic_text": "mystery",
+          "preferences": [
+            {
+              "kind": "genre",
+              "value": "Horror",
+              "polarity": -1
+            },
+            {
+              "kind": "genre",
+              "value": "Mystery",
+              "polarity": 1
+            }
+          ],
+          "constraints": [],
+          "channels": {
+            "semantic": true,
+            "metadata": true
+          },
+          "ranking": {
+            "fusion": "rrf",
+            "rrf_k": 60,
+            "diversity": "none",
+            "mmr_lambda": 0.7
+          },
+          "output": {
+            "limit": 10,
+            "explain": true
+          },
+          "diagnostics": []
+        },
+        "ir_hash_prefix": "ed0cd394a789a80c",
+        "rules_fired": [
+          "O4: pushed truncation into a1, b1"
+        ],
+        "program_unoptimized": [
+          "%s0 = SCAN",
+          "%a1 = SEM_SEARCH \"mystery\", %s0, c=N",
+          "%a2 = FILTER_LIST %a1, [], c=200",
+          "%b1 = META_SEARCH genres=[Mystery], terms=[], %s0, c=N",
+          "%b2 = FILTER_LIST %b1, [], c=200",
+          "%f = RRF %a2, %b2, k=60",
+          "%r = SOFT %f, prefs=[genre:Horror-, genre:Mystery+], soft=[]",
+          "%t = TOPK %r, n=10",
+          "%x = EXPLAIN %t",
+          "RET %x"
+        ],
+        "program_optimized": [
+          "%s0 = SCAN",
+          "%a1 = SEM_SEARCH \"mystery\", %s0, c=200",
+          "%b1 = META_SEARCH genres=[Mystery], terms=[], %s0, c=200",
+          "%f = RRF %a1, %b1, k=60",
+          "%r = SOFT %f, prefs=[genre:Horror-, genre:Mystery+], soft=[]",
+          "%t = TOPK %r, n=10",
+          "%x = EXPLAIN %t",
+          "RET %x"
+        ],
+        "result_properties": [
+          "Horror movies may appear with a soft penalty of 0.30"
+        ]
+      },
+      "notes": "Contrast with 'no horror, mystery', which compiles to a hard genre NOT_HAS Horror constraint."
+    },
+    {
+      "id": "EX19",
+      "category": "limit_clamp",
+      "text": "top 100 action movies",
+      "expected": {
+        "ok": true,
+        "diagnostics": [
+          "S109"
+        ],
+        "tokens": [
+          "LIMIT(top)[0,3)",
+          "NUMBER(100)[4,7)",
+          "GENRE(action->Action)[8,14)",
+          "ITEM(movies)[15,21)"
+        ],
+        "ir": {
+          "ir_version": "1.0",
+          "source": "top 100 action movies",
+          "semantic_text": "action",
+          "preferences": [
+            {
+              "kind": "genre",
+              "value": "Action",
+              "polarity": 1
+            }
+          ],
+          "constraints": [],
+          "channels": {
+            "semantic": true,
+            "metadata": true
+          },
+          "ranking": {
+            "fusion": "rrf",
+            "rrf_k": 60,
+            "diversity": "none",
+            "mmr_lambda": 0.7
+          },
+          "output": {
+            "limit": 50,
+            "explain": true
+          },
+          "diagnostics": [
+            "S109"
+          ]
+        },
+        "ir_hash_prefix": "02f06243041568cd",
+        "rules_fired": [
+          "O4: pushed truncation into a1, b1"
+        ],
+        "program_unoptimized": [
+          "%s0 = SCAN",
+          "%a1 = SEM_SEARCH \"action\", %s0, c=N",
+          "%a2 = FILTER_LIST %a1, [], c=200",
+          "%b1 = META_SEARCH genres=[Action], terms=[], %s0, c=N",
+          "%b2 = FILTER_LIST %b1, [], c=200",
+          "%f = RRF %a2, %b2, k=60",
+          "%r = SOFT %f, prefs=[genre:Action+], soft=[]",
+          "%t = TOPK %r, n=50",
+          "%x = EXPLAIN %t",
+          "RET %x"
+        ],
+        "program_optimized": [
+          "%s0 = SCAN",
+          "%a1 = SEM_SEARCH \"action\", %s0, c=200",
+          "%b1 = META_SEARCH genres=[Action], terms=[], %s0, c=200",
+          "%f = RRF %a1, %b1, k=60",
+          "%r = SOFT %f, prefs=[genre:Action+], soft=[]",
+          "%t = TOPK %r, n=50",
+          "%x = EXPLAIN %t",
+          "RET %x"
+        ],
+        "result_properties": [
+          "exactly 50 results"
+        ]
+      }
+    },
+    {
+      "id": "EX20",
+      "category": "unknown_words",
+      "text": "kubrick style space movies",
+      "expected": {
+        "ok": true,
+        "diagnostics": [],
+        "tokens": [
+          "WORD(kubrick)[0,7)",
+          "WORD(style)[8,13)",
+          "DESCRIPTOR(space)[14,19)",
+          "ITEM(movies)[20,26)"
+        ],
+        "ir": {
+          "ir_version": "1.0",
+          "source": "kubrick style space movies",
+          "semantic_text": "kubrick style space",
+          "preferences": [
+            {
+              "kind": "text",
+              "value": "kubrick",
+              "polarity": 1
+            },
+            {
+              "kind": "text",
+              "value": "space",
+              "polarity": 1
+            },
+            {
+              "kind": "text",
+              "value": "style",
+              "polarity": 1
+            }
+          ],
+          "constraints": [],
+          "channels": {
+            "semantic": true,
+            "metadata": true
+          },
+          "ranking": {
+            "fusion": "rrf",
+            "rrf_k": 60,
+            "diversity": "none",
+            "mmr_lambda": 0.7
+          },
+          "output": {
+            "limit": 10,
+            "explain": true
+          },
+          "diagnostics": []
+        },
+        "ir_hash_prefix": "5e46bfd553c46017",
+        "rules_fired": [
+          "O4: pushed truncation into a1, b1"
+        ],
+        "program_unoptimized": [
+          "%s0 = SCAN",
+          "%a1 = SEM_SEARCH \"kubrick style space\", %s0, c=N",
+          "%a2 = FILTER_LIST %a1, [], c=200",
+          "%b1 = META_SEARCH genres=[], terms=[kubrick, space, style], %s0, c=N",
+          "%b2 = FILTER_LIST %b1, [], c=200",
+          "%f = RRF %a2, %b2, k=60",
+          "%r = SOFT %f, prefs=[text:kubrick+, text:space+, text:style+], soft=[]",
+          "%t = TOPK %r, n=10",
+          "%x = EXPLAIN %t",
+          "RET %x"
+        ],
+        "program_optimized": [
+          "%s0 = SCAN",
+          "%a1 = SEM_SEARCH \"kubrick style space\", %s0, c=200",
+          "%b1 = META_SEARCH genres=[], terms=[kubrick, space, style], %s0, c=200",
+          "%f = RRF %a1, %b1, k=60",
+          "%r = SOFT %f, prefs=[text:kubrick+, text:space+, text:style+], soft=[]",
+          "%t = TOPK %r, n=10",
+          "%x = EXPLAIN %t",
+          "RET %x"
+        ],
+        "result_properties": [
+          "unknown words feed semantic search and tag matching"
+        ]
+      }
+    },
+    {
+      "id": "EX21",
+      "category": "near_genre_typo",
+      "text": "thriler from 2005",
+      "expected": {
+        "ok": true,
+        "diagnostics": [
+          "S101"
+        ],
+        "tokens": [
+          "WORD(thriler)[0,7)",
+          "CMP(from->'>=')[8,12)",
+          "NUMBER(2005)[13,17)"
+        ],
+        "ir": {
+          "ir_version": "1.0",
+          "source": "thriler from 2005",
+          "semantic_text": "thriler",
+          "preferences": [
+            {
+              "kind": "text",
+              "value": "thriler",
+              "polarity": 1
+            }
+          ],
+          "constraints": [
+            {
+              "field": "year",
+              "op": ">=",
+              "value": 2005,
+              "strictness": "hard"
+            }
+          ],
+          "channels": {
+            "semantic": true,
+            "metadata": true
+          },
+          "ranking": {
+            "fusion": "rrf",
+            "rrf_k": 60,
+            "diversity": "none",
+            "mmr_lambda": 0.7
+          },
+          "output": {
+            "limit": 10,
+            "explain": true
+          },
+          "diagnostics": [
+            "S101"
+          ]
+        },
+        "ir_hash_prefix": "5a605de83f13d698",
+        "rules_fired": [
+          "O4: pushed MASK [year >= 2005] into a1, b1"
+        ],
+        "program_unoptimized": [
+          "%s0 = SCAN",
+          "%a1 = SEM_SEARCH \"thriler\", %s0, c=N",
+          "%a2 = FILTER_LIST %a1, [year >= 2005], c=200",
+          "%b1 = META_SEARCH genres=[], terms=[thriler], %s0, c=N",
+          "%b2 = FILTER_LIST %b1, [year >= 2005], c=200",
+          "%f = RRF %a2, %b2, k=60",
+          "%r = SOFT %f, prefs=[text:thriler+], soft=[]",
+          "%t = TOPK %r, n=10",
+          "%x = EXPLAIN %t",
+          "RET %x"
+        ],
+        "program_optimized": [
+          "%s0 = SCAN",
+          "%m1 = MASK %s0, [year >= 2005]",
+          "%a1 = SEM_SEARCH \"thriler\", %m1, c=200",
+          "%b1 = META_SEARCH genres=[], terms=[thriler], %m1, c=200",
+          "%f = RRF %a1, %b1, k=60",
+          "%r = SOFT %f, prefs=[text:thriler+], soft=[]",
+          "%t = TOPK %r, n=10",
+          "%x = EXPLAIN %t",
+          "RET %x"
+        ],
+        "result_properties": [
+          "every result has year >= 2005"
+        ]
+      },
+      "notes": "S101 hint: did you mean Thriller?"
+    },
+    {
+      "id": "EX22",
+      "category": "constraint_only",
+      "text": "after 2015, rated at least 4",
+      "expected": {
+        "ok": true,
+        "diagnostics": [],
+        "tokens": [
+          "CMP(after->'>')[0,5)",
+          "NUMBER(2015)[6,10)",
+          "SEP(,)[10,11)",
+          "FIELD(rated->rating)[12,17)",
+          "CMP(at least->'>=')[18,26)",
+          "NUMBER(4)[27,28)"
+        ],
+        "ir": {
+          "ir_version": "1.0",
+          "source": "after 2015, rated at least 4",
+          "semantic_text": "",
+          "preferences": [],
+          "constraints": [
+            {
+              "field": "rating",
+              "op": ">=",
+              "value": 4.0,
+              "strictness": "hard"
+            },
+            {
+              "field": "year",
+              "op": ">=",
+              "value": 2016,
+              "strictness": "hard"
+            }
+          ],
+          "channels": {
+            "semantic": true,
+            "metadata": true
+          },
+          "ranking": {
+            "fusion": "rrf",
+            "rrf_k": 60,
+            "diversity": "none",
+            "mmr_lambda": 0.7
+          },
+          "output": {
+            "limit": 10,
+            "explain": true
+          },
+          "diagnostics": []
+        },
+        "ir_hash_prefix": "27a0c913d08401f2",
+        "rules_fired": [
+          "O2: year > 2015 -> year >= 2016",
+          "O3: removed a1 (SemanticSearch) and a2",
+          "O3: removed b1 (MetadataSearch) and b2",
+          "O4: pushed MASK [rating >= 4.0, year >= 2016] into p1"
+        ],
+        "program_unoptimized": [
+          "%s0 = SCAN",
+          "%a1 = SEM_SEARCH \"\", %s0, c=N",
+          "%a2 = FILTER_LIST %a1, [rating >= 4.0, year >= 2016], c=200",
+          "%b1 = META_SEARCH genres=[], terms=[], %s0, c=N",
+          "%b2 = FILTER_LIST %b1, [rating >= 4.0, year >= 2016], c=200",
+          "%p1 = POP_RANK %s0, c=N",
+          "%p2 = FILTER_LIST %p1, [rating >= 4.0, year >= 2016], c=200",
+          "%f = RRF %a2, %b2, %p2, k=60",
+          "%r = SOFT %f, prefs=[], soft=[]",
+          "%t = TOPK %r, n=10",
+          "%x = EXPLAIN %t",
+          "RET %x"
+        ],
+        "program_optimized": [
+          "%s0 = SCAN",
+          "%m1 = MASK %s0, [rating >= 4.0, year >= 2016]",
+          "%p1 = POP_RANK %m1, c=200",
+          "%f = RRF %p1, k=60",
+          "%r = SOFT %f, prefs=[], soft=[]",
+          "%t = TOPK %r, n=10",
+          "%x = EXPLAIN %t",
+          "RET %x"
+        ],
+        "result_properties": [
+          "every result has year >= 2016 and rating >= 4.0",
+          "ranked by popularity"
+        ]
+      }
+    },
+    {
+      "id": "EX23",
+      "category": "paraphrase_a",
+      "text": "comedies made after 2010",
+      "expected": {
+        "ok": true,
+        "diagnostics": [],
+        "tokens": [
+          "GENRE(comedies->Comedy)[0,8)",
+          "FIELD(made->year)[9,13)",
+          "CMP(after->'>')[14,19)",
+          "NUMBER(2010)[20,24)"
+        ],
+        "ir": {
+          "ir_version": "1.0",
+          "source": "comedies made after 2010",
+          "semantic_text": "comedy",
+          "preferences": [
+            {
+              "kind": "genre",
+              "value": "Comedy",
+              "polarity": 1
+            }
+          ],
+          "constraints": [
+            {
+              "field": "year",
+              "op": ">=",
+              "value": 2011,
+              "strictness": "hard"
+            }
+          ],
+          "channels": {
+            "semantic": true,
+            "metadata": true
+          },
+          "ranking": {
+            "fusion": "rrf",
+            "rrf_k": 60,
+            "diversity": "none",
+            "mmr_lambda": 0.7
+          },
+          "output": {
+            "limit": 10,
+            "explain": true
+          },
+          "diagnostics": []
+        },
+        "ir_hash_prefix": "8b70f359d0144416",
+        "rules_fired": [
+          "O2: year > 2010 -> year >= 2011",
+          "O4: pushed MASK [year >= 2011] into a1, b1"
+        ],
+        "program_unoptimized": [
+          "%s0 = SCAN",
+          "%a1 = SEM_SEARCH \"comedy\", %s0, c=N",
+          "%a2 = FILTER_LIST %a1, [year >= 2011], c=200",
+          "%b1 = META_SEARCH genres=[Comedy], terms=[], %s0, c=N",
+          "%b2 = FILTER_LIST %b1, [year >= 2011], c=200",
+          "%f = RRF %a2, %b2, k=60",
+          "%r = SOFT %f, prefs=[genre:Comedy+], soft=[]",
+          "%t = TOPK %r, n=10",
+          "%x = EXPLAIN %t",
+          "RET %x"
+        ],
+        "program_optimized": [
+          "%s0 = SCAN",
+          "%m1 = MASK %s0, [year >= 2011]",
+          "%a1 = SEM_SEARCH \"comedy\", %m1, c=200",
+          "%b1 = META_SEARCH genres=[Comedy], terms=[], %m1, c=200",
+          "%f = RRF %a1, %b1, k=60",
+          "%r = SOFT %f, prefs=[genre:Comedy+], soft=[]",
+          "%t = TOPK %r, n=10",
+          "%x = EXPLAIN %t",
+          "RET %x"
+        ],
+        "result_properties": [
+          "same ir_hash_prefix and same results as EX24"
+        ]
+      }
+    },
+    {
+      "id": "EX24",
+      "category": "paraphrase_b",
+      "text": "comedy from 2011",
+      "expected": {
+        "ok": true,
+        "diagnostics": [],
+        "tokens": [
+          "GENRE(comedy->Comedy)[0,6)",
+          "CMP(from->'>=')[7,11)",
+          "NUMBER(2011)[12,16)"
+        ],
+        "ir": {
+          "ir_version": "1.0",
+          "source": "comedy from 2011",
+          "semantic_text": "comedy",
+          "preferences": [
+            {
+              "kind": "genre",
+              "value": "Comedy",
+              "polarity": 1
+            }
+          ],
+          "constraints": [
+            {
+              "field": "year",
+              "op": ">=",
+              "value": 2011,
+              "strictness": "hard"
+            }
+          ],
+          "channels": {
+            "semantic": true,
+            "metadata": true
+          },
+          "ranking": {
+            "fusion": "rrf",
+            "rrf_k": 60,
+            "diversity": "none",
+            "mmr_lambda": 0.7
+          },
+          "output": {
+            "limit": 10,
+            "explain": true
+          },
+          "diagnostics": []
+        },
+        "ir_hash_prefix": "8b70f359d0144416",
+        "rules_fired": [
+          "O4: pushed MASK [year >= 2011] into a1, b1"
+        ],
+        "program_unoptimized": [
+          "%s0 = SCAN",
+          "%a1 = SEM_SEARCH \"comedy\", %s0, c=N",
+          "%a2 = FILTER_LIST %a1, [year >= 2011], c=200",
+          "%b1 = META_SEARCH genres=[Comedy], terms=[], %s0, c=N",
+          "%b2 = FILTER_LIST %b1, [year >= 2011], c=200",
+          "%f = RRF %a2, %b2, k=60",
+          "%r = SOFT %f, prefs=[genre:Comedy+], soft=[]",
+          "%t = TOPK %r, n=10",
+          "%x = EXPLAIN %t",
+          "RET %x"
+        ],
+        "program_optimized": [
+          "%s0 = SCAN",
+          "%m1 = MASK %s0, [year >= 2011]",
+          "%a1 = SEM_SEARCH \"comedy\", %m1, c=200",
+          "%b1 = META_SEARCH genres=[Comedy], terms=[], %m1, c=200",
+          "%f = RRF %a1, %b1, k=60",
+          "%r = SOFT %f, prefs=[genre:Comedy+], soft=[]",
+          "%t = TOPK %r, n=10",
+          "%x = EXPLAIN %t",
+          "RET %x"
+        ],
+        "result_properties": [
+          "same ir_hash_prefix and same results as EX23"
+        ]
+      }
+    },
+    {
+      "id": "EX25",
+      "category": "redundant_bounds",
+      "text": "drama after 2000, released after 2010",
+      "expected": {
+        "ok": true,
+        "diagnostics": [],
+        "tokens": [
+          "GENRE(drama->Drama)[0,5)",
+          "CMP(after->'>')[6,11)",
+          "NUMBER(2000)[12,16)",
+          "SEP(,)[16,17)",
+          "FIELD(released->year)[18,26)",
+          "CMP(after->'>')[27,32)",
+          "NUMBER(2010)[33,37)"
+        ],
+        "ir": {
+          "ir_version": "1.0",
+          "source": "drama after 2000, released after 2010",
+          "semantic_text": "drama",
+          "preferences": [
+            {
+              "kind": "genre",
+              "value": "Drama",
+              "polarity": 1
+            }
+          ],
+          "constraints": [
+            {
+              "field": "year",
+              "op": ">=",
+              "value": 2011,
+              "strictness": "hard"
+            }
+          ],
+          "channels": {
+            "semantic": true,
+            "metadata": true
+          },
+          "ranking": {
+            "fusion": "rrf",
+            "rrf_k": 60,
+            "diversity": "none",
+            "mmr_lambda": 0.7
+          },
+          "output": {
+            "limit": 10,
+            "explain": true
+          },
+          "diagnostics": []
+        },
+        "ir_hash_prefix": "9e6066abff4afe47",
+        "rules_fired": [
+          "O2: year > 2000 -> year >= 2001; year > 2010 -> year >= 2011",
+          "O1: hard year >= 2001 subsumed by hard year >= 2011",
+          "O4: pushed MASK [year >= 2011] into a1, b1"
+        ],
+        "program_unoptimized": [
+          "%s0 = SCAN",
+          "%a1 = SEM_SEARCH \"drama\", %s0, c=N",
+          "%a2 = FILTER_LIST %a1, [year >= 2011], c=200",
+          "%b1 = META_SEARCH genres=[Drama], terms=[], %s0, c=N",
+          "%b2 = FILTER_LIST %b1, [year >= 2011], c=200",
+          "%f = RRF %a2, %b2, k=60",
+          "%r = SOFT %f, prefs=[genre:Drama+], soft=[]",
+          "%t = TOPK %r, n=10",
+          "%x = EXPLAIN %t",
+          "RET %x"
+        ],
+        "program_optimized": [
+          "%s0 = SCAN",
+          "%m1 = MASK %s0, [year >= 2011]",
+          "%a1 = SEM_SEARCH \"drama\", %m1, c=200",
+          "%b1 = META_SEARCH genres=[Drama], terms=[], %m1, c=200",
+          "%f = RRF %a1, %b1, k=60",
+          "%r = SOFT %f, prefs=[genre:Drama+], soft=[]",
+          "%t = TOPK %r, n=10",
+          "%x = EXPLAIN %t",
+          "RET %x"
+        ],
+        "result_properties": [
+          "every result has year >= 2011"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+registry_version: "1.0"
+genres:                       # canonical -> display name used in embed/semantic text
+  Action: action
+  Adventure: adventure
+  Animation: animation
+  Children: children's
+  Comedy: comedy
+  Crime: crime
+  Documentary: documentary
+  Drama: drama
+  Fantasy: fantasy
+  Film-Noir: film noir
+  Horror: horror
+  IMAX: imax
+  Musical: musical
+  Mystery: mystery
+  Romance: romance
+  Sci-Fi: science fiction
+  Thriller: thriller
+  War: war
+  Western: western
+genre_aliases:                # lexeme -> list of canonical genres
+  sci-fi: [Sci-Fi]
+  scifi: [Sci-Fi]
+  science fiction: [Sci-Fi]
+  sf: [Sci-Fi]
+  rom-com: [Romance, Comedy]
+  romcom: [Romance, Comedy]
+  romantic comedy: [Romance, Comedy]
+  animated: [Animation]
+  cartoon: [Animation]
+  kids: [Children]
+  family: [Children]
+  noir: [Film-Noir]
+  scary: [Horror]
+  funny: [Comedy]
+  documentaries: [Documentary]
+  musicals: [Musical]
+  # plurals (comedies, thrillers, mysteries, ...) generated automatically
+fields:
+  genre:    {type: genre_set, ops: [HAS, NOT_HAS], available: true}
+  year:     {type: int,   unit: year,    ops: ["<=", ">="], domain: from_catalog, available: true}
+  rating:   {type: float, unit: stars,   ops: ["<=", ">="], domain: [0.5, 5.0],  available: true}
+  votes:    {type: int,   unit: ratings, ops: ["<=", ">="], domain: [0, null],   available: true}
+  runtime:  {type: int,   unit: minutes, ops: ["<=", ">="], domain: [1, 600],    available: false}
+  language: {type: code,  ops: [HAS],    available: false}
+units:
+  stars: {field: rating, factor: 1}
+  ratings: {field: votes, factor: 1}
+  votes: {field: votes, factor: 1}
+  minutes: {field: runtime, factor: 1}
+  mins: {field: runtime, factor: 1}
+  hours: {field: runtime, factor: 60}
+  hrs: {field: runtime, factor: 60}
+limit: {min: 1, max: 50, default: 10}
+max_input_chars: 300
