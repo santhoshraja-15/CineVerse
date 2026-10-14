@@ -83,7 +83,7 @@ Team 14 (Santhoshraja S, Siddharth P, Keshore G) · 2026-10-14 · Status: Draft 
 - Exit: zero violations; explanation tests; example test green.
 
 ### Step 12 — Interface
-- [ ] **T28** `app/streamlit_app.py` per UI/UX Specification.
+- [x] **T28** `app/streamlit_app.py` per UI/UX Specification.
 - Exit: UI acceptance checklist passes.
 
 ### Step 13 — Evaluation
