@@ -13,6 +13,7 @@ from cineverse.runtime.catalog import Catalog, MovieRecord
 from cineverse.runtime.context import RankedList
 
 MAX_REASONS = 4
+BOUND_WORDS = {">=": "at least", ">": "above", "<=": "at most", "<": "below"}
 
 
 @dataclass(frozen=True)
@@ -35,13 +36,19 @@ def _fmt(v: Any) -> str:
 
 
 def _year_bound(bounds: list[Constraint]) -> str:
-    lo = [c.value for c in bounds if c.op in (">=", ">")]
-    hi = [c.value for c in bounds if c.op in ("<=", "<")]
-    if lo and hi:
-        return f"{_fmt(max(lo))}–{_fmt(min(hi))}"
-    if lo:
-        return f"from {_fmt(max(lo))}"
-    return f"until {_fmt(min(hi))}"
+    """'from Y' (>=), 'after Y' (>), 'until Y' (<=), 'before Y' (<), 'Y1–Y2' (T01 C10)."""
+    lo = [c for c in bounds if c.op in (">=", ">")]
+    hi = [c for c in bounds if c.op in ("<=", "<")]
+    low = max(lo, key=lambda c: (c.value, c.op == ">")) if lo else None
+    high = min(hi, key=lambda c: (c.value, c.op != "<")) if hi else None
+    if low is not None and high is not None and low.op == ">=" and high.op == "<=":
+        return f"{_fmt(low.value)}–{_fmt(high.value)}"
+    words = []
+    if low is not None:
+        words.append(f"{'from' if low.op == '>=' else 'after'} {_fmt(low.value)}")
+    if high is not None:
+        words.append(f"{'until' if high.op == '<=' else 'before'} {_fmt(high.value)}")
+    return ", ".join(words)
 
 
 def _hard_reasons(rec: MovieRecord, hard: list[Constraint]) -> list[str]:
@@ -51,10 +58,9 @@ def _hard_reasons(rec: MovieRecord, hard: list[Constraint]) -> list[str]:
         out.append(f"Released {rec.year} ({_year_bound(years)})")
     for c in hard:
         if c.field == "rating" and rec.rating is not None:
-            word = "at least" if c.op in (">=", ">") else "at most"
-            out.append(f"Rated {rec.rating:.1f}★ ({word} {_fmt(c.value)})")
+            out.append(f"Rated {rec.rating:.1f}★ ({BOUND_WORDS[c.op]} {_fmt(c.value)})")
         elif c.field == "votes":
-            word = "at least" if c.op in (">=", ">") else "at most"
+            word = BOUND_WORDS[c.op]
             out.append(f"{rec.votes} ratings ({word} {_fmt(c.value)})")
         elif c.field == "genre" and c.op == "NOT_HAS":
             out.append(f"Not {c.value}")
