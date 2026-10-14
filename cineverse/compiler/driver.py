@@ -122,8 +122,8 @@ def compile_text(
     result.ir_lowered = lowered
     ir, ir_log = clock.run("passes", _ir_passes, lowered, set(rules) & set(IR_RULES))
     result.ir, result.rule_log = ir, list(ir_log)
-    passes_ran = getattr(_passes, "run_ir_passes", None) is not None
-    for error in validate(ir, registry, after_passes=passes_ran):
+    canonical = "O2" in set(rules)  # V5 (sorted, <=/>= only) holds once O2 has run
+    for error in validate(ir, registry, after_passes=canonical):
         code = VALIDATOR_CODES.get(error[:2])
         if code is None:
             raise AssertionError(f"compiler bug: {error}")
