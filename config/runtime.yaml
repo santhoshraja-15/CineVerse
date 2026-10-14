@@ -1,0 +1,16 @@
+runtime_version: "1.0"
+model_name: sentence-transformers/all-MiniLM-L6-v2
+index_backend: faiss_flat        # faiss_flat | numpy  (both exact; hnsw only for the optional scale experiment)
+candidate_budget: 200            # C
+rrf_k: 60
+score_round_decimals: 6
+soft:
+  beta: 0.10                     # bonus per matched positive soft preference
+  lambda: 0.30                   # penalty per matched negative soft preference
+  mu: 0.20                       # penalty per violated (or unknown) soft constraint
+metadata:
+  tag_match_weight: 0.5
+  bayes_m: 10
+mmr:                             # optional
+  lambda: 0.7
+seed: 42
