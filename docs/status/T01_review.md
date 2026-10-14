@@ -45,3 +45,15 @@ spec leaves open and need team confirmation; the others follow the normative spe
 
 15 items above; none blocks the build. Items C1, C2, C3, C6 and C10 change no normative name or
 schema but add a definition the spec lacks; they are recorded for the decision log.
+
+## 4. Addendum — decisions made during T13–T21
+
+| # | Where | Issue | Resolution |
+|---|---|---|---|
+| C16 | Frontend §6 S12 vs Example EX10 | "rated above 9" yields S104 and, because nothing is applied, S12 would add S111; EX10 expects S104 only | **(team)** S12 is not reported when an earlier rule already produced an ERROR |
+| C17 | IR §7 failure policy | "Any other exception → ERROR diagnostic" names no code | **(team)** No code invented: `ExecutionResult.ok = False`, `error` holds the message, the trace marks the instruction `status: "error"` and keeps the partial trace |
+| C18 | IR §2 lowering, V4 | A term both wanted and unwanted ("dark comedy, little dark") would put a negative term into `semantic_text` | Lowering drops from `semantic_text` any phrase that is also negative, so V4 always holds |
+| C19 | Frontend §6 models | Lowering needs each constraint's clause span | `Annotation` and `SemanticResult` keep exactly the specified fields; lowering derives clause spans from the AST |
+| C20 | IR §2 validators | "convert to S-diagnostics in the driver" gives no mapping | V1 → S105, V2 → S103, V3 → S107; V4/V5 cannot be caused by a request and are raised as compiler bugs |
+| C21 | IR §1 `compile()` | Without a RuntimeContext the semantic capability is unknown | `compile()` treats the semantic channel as available when `embeddings.npy` and `ids.npy` exist; `recommend()` uses the loaded context's real capabilities |
+| C22 | Frontend §4 grammar | Separators before the first clause, after the last, or repeated | Skipped silently (no P001) |
