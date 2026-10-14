@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import pytest
 
+from cineverse.compiler.codegen import generate, print_program
 from cineverse.compiler.ir import (
     Capabilities,
     Channels,
@@ -16,6 +17,7 @@ from cineverse.compiler.optimizer import optimize
 from cineverse.compiler.planner import build_plan
 
 EXACT = Capabilities(exact_search=True, semantic_available=True)
+APPROX = Capabilities(exact_search=False, semantic_available=True)
 COMEDY = Preference(kind="genre", value="Comedy", polarity=1)
 
 
@@ -56,8 +58,34 @@ def test_o3_removes_unused_nodes(runtime_cfg):
     assert "z" not in out.nodes and log[0].display() == "O3: removed unused z"
 
 
+def test_o4_shared_mask(runtime_cfg):
+    ir = q([COMEDY], [C("year", ">=", 2011)], "comedy")
+    _, out, log = run(ir, runtime_cfg, rules=["O4"])
+    assert log == ["O4: pushed MASK [year >= 2011] into a1, b1"]
+    assert out.nodes["a1"].inputs == ["m1"] == out.nodes["b1"].inputs
+    assert out.nodes["a1"].args["c"] == 200 and "a2" not in out.nodes
 
 
+def test_o4_truncation_only_when_no_hard_predicates(runtime_cfg):
+    ir = q([Preference(kind="text", value="heist", polarity=1)], text="heist")
+    _, out, log = run(ir, runtime_cfg, rules=["O4"])
+    assert log == ["O4: pushed truncation into a1, b1"] and "m1" not in out.nodes
+    assert out.nodes["a1"].inputs == ["s0"]
+
+
+def test_o4_negative_refuses_on_approximate_index(runtime_cfg):
+    ir = q([COMEDY], [C("year", ">=", 2011)], "comedy")
+    _, out, log = run(ir, runtime_cfg, caps=APPROX, rules=["O4"])
+    assert log == [] and "a2" in out.nodes and out.nodes["a1"].args["c"] == "N"
+
+
+def test_o3_then_o4_popularity_only(runtime_cfg):
+    _, out, log = run(q(cons=[C("rating", ">=", 4.0), C("year", ">=", 2016)]), runtime_cfg)
+    assert log[-1] == "O4: pushed MASK [rating >= 4.0, year >= 2016] into p1"
+    assert print_program(generate(out)) == [
+        "%s0 = SCAN", "%m1 = MASK %s0, [rating >= 4.0, year >= 2016]", "%p1 = POP_RANK %m1, c=200",
+        "%f = RRF %p1, k=60", "%r = SOFT %f, prefs=[], soft=[]", "%t = TOPK %r, n=10",
+        "%x = EXPLAIN %t", "RET %x"]
 
 
 def test_disabled_rules_leave_plan_unchanged(runtime_cfg):

@@ -67,6 +67,11 @@ class CompilationResult:
         }
 
 
+def now_ns() -> int:
+    """Monotonic clock; the driver is the compiler module allowed to read time (LA-05)."""
+    return time.perf_counter_ns()
+
+
 class _Clock:
     def __init__(self) -> None:
         self.timings: dict[str, float] = {}
