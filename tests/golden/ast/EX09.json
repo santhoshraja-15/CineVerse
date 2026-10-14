@@ -1,0 +1,62 @@
+{
+  "ast": {
+    "clauses": [
+      {
+        "field_raw": null,
+        "hedged": false,
+        "kind": "ConstraintClause",
+        "node_id": 1,
+        "op": ">",
+        "span": [
+          0,
+          10
+        ],
+        "unit_raw": null,
+        "values": [
+          {
+            "kind": "NumberNode",
+            "node_id": 2,
+            "span": [
+              6,
+              10
+            ],
+            "unit_raw": null,
+            "value": 2015
+          }
+        ]
+      },
+      {
+        "field_raw": null,
+        "hedged": false,
+        "kind": "ConstraintClause",
+        "node_id": 3,
+        "op": "<",
+        "span": [
+          11,
+          22
+        ],
+        "unit_raw": null,
+        "values": [
+          {
+            "kind": "NumberNode",
+            "node_id": 4,
+            "span": [
+              18,
+              22
+            ],
+            "unit_raw": null,
+            "value": 2000
+          }
+        ]
+      }
+    ],
+    "kind": "RequestNode",
+    "node_id": 0,
+    "source": "after 2015 before 2000",
+    "span": [
+      0,
+      22
+    ]
+  },
+  "diagnostics": []
+}

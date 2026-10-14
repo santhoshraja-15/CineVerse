@@ -1,0 +1,61 @@
+{
+  "diagnostics": [],
+  "tokens": [
+    {
+      "lexeme": "preferably",
+      "span": [
+        0,
+        10
+      ],
+      "type": "HEDGE",
+      "value": "SOFT"
+    },
+    {
+      "lexeme": "after",
+      "span": [
+        11,
+        16
+      ],
+      "type": "CMP",
+      "value": ">"
+    },
+    {
+      "lexeme": "2000",
+      "span": [
+        17,
+        21
+      ],
+      "type": "NUMBER",
+      "value": 2000
+    },
+    {
+      "lexeme": ",",
+      "span": [
+        21,
+        22
+      ],
+      "type": "SEP",
+      "value": "SEP"
+    },
+    {
+      "lexeme": "dark",
+      "span": [
+        23,
+        27
+      ],
+      "type": "DESCRIPTOR",
+      "value": "dark"
+    },
+    {
+      "lexeme": "thriller",
+      "span": [
+        28,
+        36
+      ],
+      "type": "GENRE",
+      "value": [
+        "Thriller"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "ast": {
+    "clauses": [
+      {
+        "kind": "DiversityClause",
+        "node_id": 1,
+        "span": [
+          0,
+          7
+        ]
+      },
+      {
+        "has_or": false,
+        "kind": "PreferenceClause",
+        "modifier": "NONE",
+        "node_id": 2,
+        "span": [
+          8,
+          26
+        ],
+        "terms": [
+          {
+            "kind": "DescriptorTerm",
+            "node_id": 3,
+            "span": [
+              8,
+              17
+            ],
+            "text": "feel-good"
+          },
+          {
+            "genres": [
+              "Comedy"
+            ],
+            "kind": "GenreTerm",
+            "node_id": 4,
+            "raw": "comedies",
+            "span": [
+              18,
+              26
+            ]
+          }
+        ]
+      }
+    ],
+    "kind": "RequestNode",
+    "node_id": 0,
+    "source": "diverse feel-good comedies",
+    "span": [
+      0,
+      26
+    ]
+  },
+  "diagnostics": []
+}

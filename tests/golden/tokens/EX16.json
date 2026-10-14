@@ -1,0 +1,34 @@
+{
+  "diagnostics": [],
+  "tokens": [
+    {
+      "lexeme": "diverse",
+      "span": [
+        0,
+        7
+      ],
+      "type": "DIVERSE",
+      "value": "DIVERSE"
+    },
+    {
+      "lexeme": "feel-good",
+      "span": [
+        8,
+        17
+      ],
+      "type": "DESCRIPTOR",
+      "value": "feel-good"
+    },
+    {
+      "lexeme": "comedies",
+      "span": [
+        18,
+        26
+      ],
+      "type": "GENRE",
+      "value": [
+        "Comedy"
+      ]
+    }
+  ]
+}

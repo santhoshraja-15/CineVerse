@@ -1,0 +1,70 @@
+{
+  "diagnostics": [],
+  "tokens": [
+    {
+      "lexeme": "drama",
+      "span": [
+        0,
+        5
+      ],
+      "type": "GENRE",
+      "value": [
+        "Drama"
+      ]
+    },
+    {
+      "lexeme": "after",
+      "span": [
+        6,
+        11
+      ],
+      "type": "CMP",
+      "value": ">"
+    },
+    {
+      "lexeme": "2000",
+      "span": [
+        12,
+        16
+      ],
+      "type": "NUMBER",
+      "value": 2000
+    },
+    {
+      "lexeme": ",",
+      "span": [
+        16,
+        17
+      ],
+      "type": "SEP",
+      "value": "SEP"
+    },
+    {
+      "lexeme": "released",
+      "span": [
+        18,
+        26
+      ],
+      "type": "FIELD",
+      "value": "year"
+    },
+    {
+      "lexeme": "after",
+      "span": [
+        27,
+        32
+      ],
+      "type": "CMP",
+      "value": ">"
+    },
+    {
+      "lexeme": "2010",
+      "span": [
+        33,
+        37
+      ],
+      "type": "NUMBER",
+      "value": 2010
+    }
+  ]
+}

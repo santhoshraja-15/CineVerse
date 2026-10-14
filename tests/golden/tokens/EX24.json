@@ -1,0 +1,34 @@
+{
+  "diagnostics": [],
+  "tokens": [
+    {
+      "lexeme": "comedy",
+      "span": [
+        0,
+        6
+      ],
+      "type": "GENRE",
+      "value": [
+        "Comedy"
+      ]
+    },
+    {
+      "lexeme": "from",
+      "span": [
+        7,
+        11
+      ],
+      "type": "CMP",
+      "value": ">="
+    },
+    {
+      "lexeme": "2011",
+      "span": [
+        12,
+        16
+      ],
+      "type": "NUMBER",
+      "value": 2011
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "diagnostics": [],
+  "tokens": [
+    {
+      "lexeme": "not too",
+      "span": [
+        0,
+        7
+      ],
+      "type": "NEG_SOFT",
+      "value": "SOFT"
+    },
+    {
+      "lexeme": "violent",
+      "span": [
+        8,
+        15
+      ],
+      "type": "DESCRIPTOR",
+      "value": "violent"
+    },
+    {
+      "lexeme": "crime",
+      "span": [
+        16,
+        21
+      ],
+      "type": "GENRE",
+      "value": [
+        "Crime"
+      ]
+    },
+    {
+      "lexeme": "drama",
+      "span": [
+        22,
+        27
+      ],
+      "type": "GENRE",
+      "value": [
+        "Drama"
+      ]
+    }
+  ]
+}

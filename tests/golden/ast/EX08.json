@@ -1,0 +1,62 @@
+{
+  "ast": {
+    "clauses": [
+      {
+        "has_or": false,
+        "kind": "PreferenceClause",
+        "modifier": "STRICT",
+        "node_id": 1,
+        "span": [
+          0,
+          11
+        ],
+        "terms": [
+          {
+            "genres": [
+              "Horror"
+            ],
+            "kind": "GenreTerm",
+            "node_id": 2,
+            "raw": "horror",
+            "span": [
+              5,
+              11
+            ]
+          }
+        ]
+      },
+      {
+        "hedged": false,
+        "kind": "ExclusionClause",
+        "node_id": 3,
+        "span": [
+          16,
+          25
+        ],
+        "strength": "HARD",
+        "targets": [
+          {
+            "genres": [
+              "Horror"
+            ],
+            "kind": "GenreTerm",
+            "node_id": 4,
+            "raw": "horror",
+            "span": [
+              19,
+              25
+            ]
+          }
+        ]
+      }
+    ],
+    "kind": "RequestNode",
+    "node_id": 0,
+    "source": "only horror and no horror",
+    "span": [
+      0,
+      25
+    ]
+  },
+  "diagnostics": []
+}

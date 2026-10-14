@@ -1,0 +1,35 @@
+{
+  "ast": {
+    "clauses": [
+      {
+        "hedged": false,
+        "kind": "ExclusionClause",
+        "node_id": 1,
+        "span": [
+          0,
+          7
+        ],
+        "strength": "HARD",
+        "targets": [
+          {
+            "kind": "DescriptorTerm",
+            "node_id": 2,
+            "span": [
+              3,
+              7
+            ],
+            "text": "gore"
+          }
+        ]
+      }
+    ],
+    "kind": "RequestNode",
+    "node_id": 0,
+    "source": "no gore",
+    "span": [
+      0,
+      7
+    ]
+  },
+  "diagnostics": []
+}

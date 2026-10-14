@@ -1,0 +1,59 @@
+{
+  "ast": {
+    "clauses": [
+      {
+        "has_or": false,
+        "kind": "PreferenceClause",
+        "modifier": "NONE",
+        "node_id": 1,
+        "span": [
+          0,
+          7
+        ],
+        "terms": [
+          {
+            "kind": "DescriptorTerm",
+            "node_id": 2,
+            "span": [
+              0,
+              7
+            ],
+            "text": "thriler"
+          }
+        ]
+      },
+      {
+        "field_raw": null,
+        "hedged": false,
+        "kind": "ConstraintClause",
+        "node_id": 3,
+        "op": ">=",
+        "span": [
+          8,
+          17
+        ],
+        "unit_raw": null,
+        "values": [
+          {
+            "kind": "NumberNode",
+            "node_id": 4,
+            "span": [
+              13,
+              17
+            ],
+            "unit_raw": null,
+            "value": 2005
+          }
+        ]
+      }
+    ],
+    "kind": "RequestNode",
+    "node_id": 0,
+    "source": "thriler from 2005",
+    "span": [
+      0,
+      17
+    ]
+  },
+  "diagnostics": []
+}

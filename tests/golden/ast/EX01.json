@@ -1,0 +1,116 @@
+{
+  "ast": {
+    "clauses": [
+      {
+        "has_or": false,
+        "kind": "PreferenceClause",
+        "modifier": "NONE",
+        "node_id": 1,
+        "span": [
+          0,
+          25
+        ],
+        "terms": [
+          {
+            "kind": "DescriptorTerm",
+            "node_id": 2,
+            "span": [
+              0,
+              10
+            ],
+            "text": "thoughtful"
+          },
+          {
+            "genres": [
+              "Sci-Fi"
+            ],
+            "kind": "GenreTerm",
+            "node_id": 3,
+            "raw": "sci-fi",
+            "span": [
+              11,
+              17
+            ]
+          },
+          {
+            "genres": [
+              "Mystery"
+            ],
+            "kind": "GenreTerm",
+            "node_id": 4,
+            "raw": "mystery",
+            "span": [
+              18,
+              25
+            ]
+          }
+        ]
+      },
+      {
+        "field_raw": null,
+        "hedged": false,
+        "kind": "ConstraintClause",
+        "node_id": 5,
+        "op": ">",
+        "span": [
+          26,
+          36
+        ],
+        "unit_raw": null,
+        "values": [
+          {
+            "kind": "NumberNode",
+            "node_id": 6,
+            "span": [
+              32,
+              36
+            ],
+            "unit_raw": null,
+            "value": 2010
+          }
+        ]
+      },
+      {
+        "hedged": false,
+        "kind": "ExclusionClause",
+        "node_id": 7,
+        "span": [
+          38,
+          52
+        ],
+        "strength": "SOFT",
+        "targets": [
+          {
+            "genres": [
+              "Romance"
+            ],
+            "kind": "GenreTerm",
+            "node_id": 8,
+            "raw": "romance",
+            "span": [
+              45,
+              52
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "LimitClause",
+        "n": 5,
+        "node_id": 9,
+        "span": [
+          54,
+          59
+        ]
+      }
+    ],
+    "kind": "RequestNode",
+    "node_id": 0,
+    "source": "thoughtful sci-fi mystery after 2010, little romance, top 5",
+    "span": [
+      0,
+      59
+    ]
+  },
+  "diagnostics": []
+}

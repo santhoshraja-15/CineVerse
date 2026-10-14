@@ -1,0 +1,32 @@
+{
+  "diagnostics": [],
+  "tokens": [
+    {
+      "lexeme": "thriler",
+      "span": [
+        0,
+        7
+      ],
+      "type": "WORD",
+      "value": "thriler"
+    },
+    {
+      "lexeme": "from",
+      "span": [
+        8,
+        12
+      ],
+      "type": "CMP",
+      "value": ">="
+    },
+    {
+      "lexeme": "2005",
+      "span": [
+        13,
+        17
+      ],
+      "type": "NUMBER",
+      "value": 2005
+    }
+  ]
+}

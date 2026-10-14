@@ -1,0 +1,54 @@
+{
+  "diagnostics": [],
+  "tokens": [
+    {
+      "lexeme": "ideally",
+      "span": [
+        0,
+        7
+      ],
+      "type": "HEDGE",
+      "value": "SOFT"
+    },
+    {
+      "lexeme": "no",
+      "span": [
+        8,
+        10
+      ],
+      "type": "NEG_HARD",
+      "value": "HARD"
+    },
+    {
+      "lexeme": "horror",
+      "span": [
+        11,
+        17
+      ],
+      "type": "GENRE",
+      "value": [
+        "Horror"
+      ]
+    },
+    {
+      "lexeme": ",",
+      "span": [
+        17,
+        18
+      ],
+      "type": "SEP",
+      "value": "SEP"
+    },
+    {
+      "lexeme": "mystery",
+      "span": [
+        19,
+        26
+      ],
+      "type": "GENRE",
+      "value": [
+        "Mystery"
+      ]
+    }
+  ]
+}

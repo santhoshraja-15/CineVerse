@@ -1,0 +1,23 @@
+{
+  "diagnostics": [],
+  "tokens": [
+    {
+      "lexeme": "something",
+      "span": [
+        0,
+        9
+      ],
+      "type": "FILLER",
+      "value": null
+    },
+    {
+      "lexeme": "please",
+      "span": [
+        10,
+        16
+      ],
+      "type": "FILLER",
+      "value": null
+    }
+  ]
+}

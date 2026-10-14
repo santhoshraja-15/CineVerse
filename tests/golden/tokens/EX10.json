@@ -1,0 +1,32 @@
+{
+  "diagnostics": [],
+  "tokens": [
+    {
+      "lexeme": "rated",
+      "span": [
+        0,
+        5
+      ],
+      "type": "FIELD",
+      "value": "rating"
+    },
+    {
+      "lexeme": "above",
+      "span": [
+        6,
+        11
+      ],
+      "type": "CMP",
+      "value": ">"
+    },
+    {
+      "lexeme": "9",
+      "span": [
+        12,
+        13
+      ],
+      "type": "NUMBER",
+      "value": 9
+    }
+  ]
+}

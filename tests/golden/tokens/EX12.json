@@ -1,0 +1,23 @@
+{
+  "diagnostics": [],
+  "tokens": [
+    {
+      "lexeme": "no",
+      "span": [
+        0,
+        2
+      ],
+      "type": "NEG_HARD",
+      "value": "HARD"
+    },
+    {
+      "lexeme": "gore",
+      "span": [
+        3,
+        7
+      ],
+      "type": "DESCRIPTOR",
+      "value": "gore"
+    }
+  ]
+}

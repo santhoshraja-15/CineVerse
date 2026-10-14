@@ -1,0 +1,62 @@
+{
+  "ast": {
+    "clauses": [
+      {
+        "has_or": false,
+        "kind": "PreferenceClause",
+        "modifier": "NONE",
+        "node_id": 1,
+        "span": [
+          0,
+          8
+        ],
+        "terms": [
+          {
+            "genres": [
+              "Comedy"
+            ],
+            "kind": "GenreTerm",
+            "node_id": 2,
+            "raw": "comedies",
+            "span": [
+              0,
+              8
+            ]
+          }
+        ]
+      },
+      {
+        "field_raw": "made",
+        "hedged": false,
+        "kind": "ConstraintClause",
+        "node_id": 3,
+        "op": ">",
+        "span": [
+          9,
+          24
+        ],
+        "unit_raw": null,
+        "values": [
+          {
+            "kind": "NumberNode",
+            "node_id": 4,
+            "span": [
+              20,
+              24
+            ],
+            "unit_raw": null,
+            "value": 2010
+          }
+        ]
+      }
+    ],
+    "kind": "RequestNode",
+    "node_id": 0,
+    "source": "comedies made after 2010",
+    "span": [
+      0,
+      24
+    ]
+  },
+  "diagnostics": []
+}

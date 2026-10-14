@@ -1,0 +1,74 @@
+{
+  "diagnostics": [],
+  "tokens": [
+    {
+      "lexeme": "a",
+      "span": [
+        0,
+        1
+      ],
+      "type": "FILLER",
+      "value": null
+    },
+    {
+      "lexeme": "funny",
+      "span": [
+        2,
+        7
+      ],
+      "type": "GENRE",
+      "value": [
+        "Comedy"
+      ]
+    },
+    {
+      "lexeme": "animated",
+      "span": [
+        8,
+        16
+      ],
+      "type": "GENRE",
+      "value": [
+        "Animation"
+      ]
+    },
+    {
+      "lexeme": "movie",
+      "span": [
+        17,
+        22
+      ],
+      "type": "ITEM",
+      "value": "ITEM"
+    },
+    {
+      "lexeme": ",",
+      "span": [
+        22,
+        23
+      ],
+      "type": "SEP",
+      "value": "SEP"
+    },
+    {
+      "lexeme": "no",
+      "span": [
+        24,
+        26
+      ],
+      "type": "NEG_HARD",
+      "value": "HARD"
+    },
+    {
+      "lexeme": "musicals",
+      "span": [
+        27,
+        35
+      ],
+      "type": "GENRE",
+      "value": [
+        "Musical"
+      ]
+    }
+  ]
+}
