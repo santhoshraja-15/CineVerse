@@ -1,0 +1,59 @@
+{
+  "channels": {
+    "metadata": true,
+    "semantic": true
+  },
+  "constraints": [
+    {
+      "field": "rating",
+      "op": ">=",
+      "span": [
+        35,
+        57
+      ],
+      "strictness": "hard",
+      "value": 4.0
+    },
+    {
+      "field": "year",
+      "op": "<=",
+      "span": [
+        13,
+        34
+      ],
+      "strictness": "hard",
+      "value": 2010
+    },
+    {
+      "field": "year",
+      "op": ">=",
+      "span": [
+        13,
+        34
+      ],
+      "strictness": "hard",
+      "value": 2000
+    }
+  ],
+  "diagnostics": [],
+  "ir_version": "1.0",
+  "output": {
+    "explain": true,
+    "limit": 10
+  },
+  "preferences": [
+    {
+      "kind": "text",
+      "polarity": 1,
+      "value": "heist"
+    }
+  ],
+  "ranking": {
+    "diversity": "none",
+    "fusion": "rrf",
+    "mmr_lambda": 0.7,
+    "rrf_k": 60
+  },
+  "semantic_text": "heist",
+  "source": "heist movies between 2000 and 2010 rated at least 4 stars"
+}

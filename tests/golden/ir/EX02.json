@@ -1,0 +1,44 @@
+{
+  "channels": {
+    "metadata": true,
+    "semantic": true
+  },
+  "constraints": [
+    {
+      "field": "genre",
+      "op": "NOT_HAS",
+      "span": [
+        24,
+        35
+      ],
+      "strictness": "hard",
+      "value": "Musical"
+    }
+  ],
+  "diagnostics": [],
+  "ir_version": "1.0",
+  "output": {
+    "explain": true,
+    "limit": 10
+  },
+  "preferences": [
+    {
+      "kind": "genre",
+      "polarity": 1,
+      "value": "Animation"
+    },
+    {
+      "kind": "genre",
+      "polarity": 1,
+      "value": "Comedy"
+    }
+  ],
+  "ranking": {
+    "diversity": "none",
+    "fusion": "rrf",
+    "mmr_lambda": 0.7,
+    "rrf_k": 60
+  },
+  "semantic_text": "comedy animation",
+  "source": "a funny animated movie, no musicals"
+}

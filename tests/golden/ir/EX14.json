@@ -1,0 +1,44 @@
+{
+  "channels": {
+    "metadata": true,
+    "semantic": true
+  },
+  "constraints": [
+    {
+      "field": "votes",
+      "op": ">=",
+      "span": [
+        9,
+        29
+      ],
+      "strictness": "hard",
+      "value": 100
+    }
+  ],
+  "diagnostics": [],
+  "ir_version": "1.0",
+  "output": {
+    "explain": true,
+    "limit": 10
+  },
+  "preferences": [
+    {
+      "kind": "genre",
+      "polarity": 1,
+      "value": "Comedy"
+    },
+    {
+      "kind": "genre",
+      "polarity": 1,
+      "value": "Romance"
+    }
+  ],
+  "ranking": {
+    "diversity": "none",
+    "fusion": "rrf",
+    "mmr_lambda": 0.7,
+    "rrf_k": 60
+  },
+  "semantic_text": "romance comedy",
+  "source": "rom-com, at least 100 ratings"
+}

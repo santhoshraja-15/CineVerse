@@ -1,0 +1,39 @@
+{
+  "channels": {
+    "metadata": true,
+    "semantic": true
+  },
+  "constraints": [],
+  "diagnostics": [
+    {
+      "code": "S109",
+      "hint": null,
+      "message": "Number of results limited to 50",
+      "severity": "WARNING",
+      "span": [
+        0,
+        7
+      ]
+    }
+  ],
+  "ir_version": "1.0",
+  "output": {
+    "explain": true,
+    "limit": 50
+  },
+  "preferences": [
+    {
+      "kind": "genre",
+      "polarity": 1,
+      "value": "Action"
+    }
+  ],
+  "ranking": {
+    "diversity": "none",
+    "fusion": "rrf",
+    "mmr_lambda": 0.7,
+    "rrf_k": 60
+  },
+  "semantic_text": "action",
+  "source": "top 100 action movies"
+}

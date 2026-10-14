@@ -1,0 +1,54 @@
+{
+  "channels": {
+    "metadata": true,
+    "semantic": true
+  },
+  "constraints": [
+    {
+      "field": "year",
+      "op": ">=",
+      "span": [
+        26,
+        36
+      ],
+      "strictness": "hard",
+      "value": 2011
+    }
+  ],
+  "diagnostics": [],
+  "ir_version": "1.0",
+  "output": {
+    "explain": true,
+    "limit": 5
+  },
+  "preferences": [
+    {
+      "kind": "genre",
+      "polarity": 1,
+      "value": "Mystery"
+    },
+    {
+      "kind": "genre",
+      "polarity": -1,
+      "value": "Romance"
+    },
+    {
+      "kind": "genre",
+      "polarity": 1,
+      "value": "Sci-Fi"
+    },
+    {
+      "kind": "text",
+      "polarity": 1,
+      "value": "thoughtful"
+    }
+  ],
+  "ranking": {
+    "diversity": "none",
+    "fusion": "rrf",
+    "mmr_lambda": 0.7,
+    "rrf_k": 60
+  },
+  "semantic_text": "thoughtful science fiction mystery",
+  "source": "thoughtful sci-fi mystery after 2010, little romance, top 5"
+}

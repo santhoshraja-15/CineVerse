@@ -1,0 +1,25 @@
+{
+  "optimized": [
+    "%s0 = SCAN",
+    "%m1 = MASK %s0, [year >= 2011]",
+    "%a1 = SEM_SEARCH \"drama\", %m1, c=200",
+    "%b1 = META_SEARCH genres=[Drama], terms=[], %m1, c=200",
+    "%f = RRF %a1, %b1, k=60",
+    "%r = SOFT %f, prefs=[genre:Drama+], soft=[]",
+    "%t = TOPK %r, n=10",
+    "%x = EXPLAIN %t",
+    "RET %x"
+  ],
+  "unoptimized": [
+    "%s0 = SCAN",
+    "%a1 = SEM_SEARCH \"drama\", %s0, c=N",
+    "%a2 = FILTER_LIST %a1, [year >= 2011], c=200",
+    "%b1 = META_SEARCH genres=[Drama], terms=[], %s0, c=N",
+    "%b2 = FILTER_LIST %b1, [year >= 2011], c=200",
+    "%f = RRF %a2, %b2, k=60",
+    "%r = SOFT %f, prefs=[genre:Drama+], soft=[]",
+    "%t = TOPK %r, n=10",
+    "%x = EXPLAIN %t",
+    "RET %x"
+  ]
+}

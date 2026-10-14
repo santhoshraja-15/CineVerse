@@ -1,0 +1,33 @@
+{
+  "channels": {
+    "metadata": true,
+    "semantic": true
+  },
+  "constraints": [],
+  "diagnostics": [],
+  "ir_version": "1.0",
+  "output": {
+    "explain": true,
+    "limit": 10
+  },
+  "preferences": [
+    {
+      "kind": "genre",
+      "polarity": -1,
+      "value": "Horror"
+    },
+    {
+      "kind": "genre",
+      "polarity": 1,
+      "value": "Mystery"
+    }
+  ],
+  "ranking": {
+    "diversity": "none",
+    "fusion": "rrf",
+    "mmr_lambda": 0.7,
+    "rrf_k": 60
+  },
+  "semantic_text": "mystery",
+  "source": "ideally no horror, mystery"
+}

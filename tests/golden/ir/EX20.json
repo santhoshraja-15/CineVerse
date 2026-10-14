@@ -1,0 +1,38 @@
+{
+  "channels": {
+    "metadata": true,
+    "semantic": true
+  },
+  "constraints": [],
+  "diagnostics": [],
+  "ir_version": "1.0",
+  "output": {
+    "explain": true,
+    "limit": 10
+  },
+  "preferences": [
+    {
+      "kind": "text",
+      "polarity": 1,
+      "value": "kubrick"
+    },
+    {
+      "kind": "text",
+      "polarity": 1,
+      "value": "space"
+    },
+    {
+      "kind": "text",
+      "polarity": 1,
+      "value": "style"
+    }
+  ],
+  "ranking": {
+    "diversity": "none",
+    "fusion": "rrf",
+    "mmr_lambda": 0.7,
+    "rrf_k": 60
+  },
+  "semantic_text": "kubrick style space",
+  "source": "kubrick style space movies"
+}

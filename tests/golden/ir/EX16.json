@@ -1,0 +1,44 @@
+{
+  "channels": {
+    "metadata": true,
+    "semantic": true
+  },
+  "constraints": [],
+  "diagnostics": [
+    {
+      "code": "S105",
+      "hint": null,
+      "message": "diversity is not available in this catalogue; 'diverse' was not applied",
+      "severity": "WARNING",
+      "span": [
+        0,
+        7
+      ]
+    }
+  ],
+  "ir_version": "1.0",
+  "output": {
+    "explain": true,
+    "limit": 10
+  },
+  "preferences": [
+    {
+      "kind": "genre",
+      "polarity": 1,
+      "value": "Comedy"
+    },
+    {
+      "kind": "text",
+      "polarity": 1,
+      "value": "feel-good"
+    }
+  ],
+  "ranking": {
+    "diversity": "none",
+    "fusion": "rrf",
+    "mmr_lambda": 0.7,
+    "rrf_k": 60
+  },
+  "semantic_text": "feel-good comedy",
+  "source": "diverse feel-good comedies"
+}

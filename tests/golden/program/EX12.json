@@ -1,0 +1,25 @@
+{
+  "optimized": [
+    "%s0 = SCAN",
+    "%p1 = POP_RANK %s0, c=200",
+    "%f = RRF %p1, k=60",
+    "%r = SOFT %f, prefs=[text:gore-], soft=[]",
+    "%t = TOPK %r, n=10",
+    "%x = EXPLAIN %t",
+    "RET %x"
+  ],
+  "unoptimized": [
+    "%s0 = SCAN",
+    "%a1 = SEM_SEARCH \"\", %s0, c=N",
+    "%a2 = FILTER_LIST %a1, [], c=200",
+    "%b1 = META_SEARCH genres=[], terms=[], %s0, c=N",
+    "%b2 = FILTER_LIST %b1, [], c=200",
+    "%p1 = POP_RANK %s0, c=N",
+    "%p2 = FILTER_LIST %p1, [], c=200",
+    "%f = RRF %a2, %b2, %p2, k=60",
+    "%r = SOFT %f, prefs=[text:gore-], soft=[]",
+    "%t = TOPK %r, n=10",
+    "%x = EXPLAIN %t",
+    "RET %x"
+  ]
+}

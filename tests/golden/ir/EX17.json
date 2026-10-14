@@ -1,0 +1,38 @@
+{
+  "channels": {
+    "metadata": true,
+    "semantic": true
+  },
+  "constraints": [],
+  "diagnostics": [],
+  "ir_version": "1.0",
+  "output": {
+    "explain": true,
+    "limit": 10
+  },
+  "preferences": [
+    {
+      "kind": "genre",
+      "polarity": 1,
+      "value": "Crime"
+    },
+    {
+      "kind": "genre",
+      "polarity": 1,
+      "value": "Drama"
+    },
+    {
+      "kind": "text",
+      "polarity": -1,
+      "value": "violent"
+    }
+  ],
+  "ranking": {
+    "diversity": "none",
+    "fusion": "rrf",
+    "mmr_lambda": 0.7,
+    "rrf_k": 60
+  },
+  "semantic_text": "crime drama",
+  "source": "not too violent crime drama"
+}

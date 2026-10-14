@@ -1,0 +1,39 @@
+{
+  "channels": {
+    "metadata": true,
+    "semantic": true
+  },
+  "constraints": [
+    {
+      "field": "year",
+      "op": ">=",
+      "span": [
+        18,
+        37
+      ],
+      "strictness": "hard",
+      "value": 2011
+    }
+  ],
+  "diagnostics": [],
+  "ir_version": "1.0",
+  "output": {
+    "explain": true,
+    "limit": 10
+  },
+  "preferences": [
+    {
+      "kind": "genre",
+      "polarity": 1,
+      "value": "Drama"
+    }
+  ],
+  "ranking": {
+    "diversity": "none",
+    "fusion": "rrf",
+    "mmr_lambda": 0.7,
+    "rrf_k": 60
+  },
+  "semantic_text": "drama",
+  "source": "drama after 2000, released after 2010"
+}
