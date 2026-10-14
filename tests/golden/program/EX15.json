@@ -1,0 +1,24 @@
+{
+  "optimized": [
+    "%s0 = SCAN",
+    "%a1 = SEM_SEARCH \"comedy drama\", %s0, c=200",
+    "%b1 = META_SEARCH genres=[Comedy, Drama], terms=[], %s0, c=200",
+    "%f = RRF %a1, %b1, k=60",
+    "%r = SOFT %f, prefs=[genre:Comedy+, genre:Drama+], soft=[]",
+    "%t = TOPK %r, n=10",
+    "%x = EXPLAIN %t",
+    "RET %x"
+  ],
+  "unoptimized": [
+    "%s0 = SCAN",
+    "%a1 = SEM_SEARCH \"comedy drama\", %s0, c=N",
+    "%a2 = FILTER_LIST %a1, [], c=200",
+    "%b1 = META_SEARCH genres=[Comedy, Drama], terms=[], %s0, c=N",
+    "%b2 = FILTER_LIST %b1, [], c=200",
+    "%f = RRF %a2, %b2, k=60",
+    "%r = SOFT %f, prefs=[genre:Comedy+, genre:Drama+], soft=[]",
+    "%t = TOPK %r, n=10",
+    "%x = EXPLAIN %t",
+    "RET %x"
+  ]
+}

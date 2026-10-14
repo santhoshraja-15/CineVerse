@@ -23,63 +23,63 @@ Team 14 (Santhoshraja S, Siddharth P, Keshore G) · 2026-10-14 · Status: Draft 
 ## 2. Step-by-Step Checklist
 
 ### Step 1 — Freeze scope and interfaces
-- [ ] **T01** All members read SRS, Frontend, IR, Optimizer and Engine specs; open questions resolved in Project Control decision log.
-- [ ] **T02** First 20 benchmark items (2 per valid category) with gold IR, gold diagnostics and baseline specs.
+- [x] **T01** All members read SRS, Frontend, IR, Optimizer and Engine specs; open questions resolved in Project Control decision log.
+- [x] **T02** First 20 benchmark items (2 per valid category) with gold IR, gold diagnostics and baseline specs.
 - Exit: specs v1.0 signed off; `benchmark/requests.jsonl` has 20 reviewed items.
 
 ### Step 2 — Repository and environment
-- [ ] **T03** Repo scaffold, `requirements.txt`, `pyproject.toml` (ruff, pytest config), `test_smoke.py`, `test_layers.py`, `scripts/check.sh|ps1`.
+- [x] **T03** Repo scaffold, `requirements.txt`, `pyproject.toml` (ruff, pytest config), `test_smoke.py`, `test_layers.py`, `scripts/check.sh|ps1`.
 - Exit: clean install on all three laptops; `pytest -q` green; `requirements.lock` committed.
 
 ### Step 3 — Dataset
-- [ ] **T04** `data/prepare.py`, `runtime/catalog.py`, D1–D7 checks, manifest.
+- [x] **T04** `data/prepare.py`, `runtime/catalog.py`, D1–D7 checks, manifest.
 - Exit: `catalog.parquet` + manifest; data tests green.
 
 ### Step 4 — Runtime operators and baseline
-- [ ] **T05** `runtime/embeddings.py`, `data/build_index.py` (I1–I6).
-- [ ] **T06** `runtime/semantic_index.py` (FAISS flat + NumPy, scoped search).
-- [ ] **T07** `runtime/metadata_search.py` (search + popularity).
-- [ ] **T08** `runtime/constraints.py`, `runtime/fusion.py`, `runtime/scoring.py`.
-- [ ] **T09** `runtime/explain.py` + `Recommendation`.
-- [ ] **T10** `baseline/baseline.py`, `baseline/popularity.py`.
+- [x] **T05** `runtime/embeddings.py`, `data/build_index.py` (I1–I6).
+- [x] **T06** `runtime/semantic_index.py` (FAISS flat + NumPy, scoped search).
+- [x] **T07** `runtime/metadata_search.py` (search + popularity).
+- [x] **T08** `runtime/constraints.py`, `runtime/fusion.py`, `runtime/scoring.py`.
+- [x] **T09** `runtime/explain.py` + `Recommendation`.
+- [x] **T10** `baseline/baseline.py`, `baseline/popularity.py`.
 - Exit: runtime tests green; baseline answers 10 hand specs; FAISS = NumPy.
 
 ### Step 5 — Lexer, parser, AST, diagnostics
-- [ ] **T11** `compiler/diagnostics.py`, `compiler/lexicon.py`, `compiler/lexer.py`.
-- [ ] **T12** `compiler/ast.py`, `compiler/parser.py`.
-- [ ] **T13** Golden-file tooling `tests/golden/regenerate.py`; golden tokens and ASTs for all benchmark items.
+- [x] **T11** `compiler/diagnostics.py`, `compiler/lexicon.py`, `compiler/lexer.py`.
+- [x] **T12** `compiler/ast.py`, `compiler/parser.py`.
+- [x] **T13** Golden-file tooling `tests/golden/regenerate.py`; golden tokens and ASTs for all benchmark items.
 - Exit: lexer (≥ 40) and parser (≥ 30) tests; golden files reviewed.
 
 ### Step 6 — Registry and semantic analysis
-- [ ] **T14** `compiler/registry.py`.
-- [ ] **T15** `compiler/semantic.py` (S1–S13).
+- [x] **T14** `compiler/registry.py`.
+- [x] **T15** `compiler/semantic.py` (S1–S13).
 - Exit: every S-rule has ≥ 3 tests; invalid benchmark items produce gold codes.
 
 ### Step 7 — IR
-- [ ] **T16** `compiler/ir.py` (models, lowering, V1–V5, to_json, hash, from_json).
+- [x] **T16** `compiler/ir.py` (models, lowering, V1–V5, to_json, hash, from_json).
 - Exit: IR tests; dev IR accuracy measured (lists compared as sets until O2 exists).
 
 ### Step 8 — Planner, codegen, executor
-- [ ] **T17** `compiler/planner.py` (template, validate).
-- [ ] **T18** `compiler/codegen.py` (order, SSA, printed form).
-- [ ] **T19** `runtime/executor.py`, `runtime/trace.py`, `runtime/trace_schema.json`.
-- [ ] **T20** `compiler/driver.py`, `cineverse/__init__.py::recommend`.
+- [x] **T17** `compiler/planner.py` (template, validate).
+- [x] **T18** `compiler/codegen.py` (order, SSA, printed form).
+- [x] **T19** `runtime/executor.py`, `runtime/trace.py`, `runtime/trace_schema.json`.
+- [x] **T20** `compiler/driver.py`, `cineverse/__init__.py::recommend`.
 - Exit: plan and program validity 100%; unoptimized programs match `program_unoptimized` in the example JSON.
 
 ### Step 9 — Behaviour preservation (gate)
-- [ ] **T21** `tests/test_preservation.py`; baseline specs for every benchmark item.
+- [x] **T21** `tests/test_preservation.py`; baseline specs for every benchmark item.
 - Exit: 100% equal. **Gate for step 10.**
 
 ### Step 10 — Optimizer (one rule at a time)
-- [ ] **T22** O2 in `compiler/passes.py`.
-- [ ] **T23** O1 in `compiler/passes.py`.
-- [ ] **T24** O3 in `compiler/optimizer.py`.
-- [ ] **T25** O4 in `compiler/optimizer.py`; `compiler/equivalence.py`; `test_equivalence.py`; property tests.
+- [x] **T22** O2 in `compiler/passes.py`.
+- [x] **T23** O1 in `compiler/passes.py`.
+- [x] **T24** O3 in `compiler/optimizer.py`.
+- [x] **T25** O4 in `compiler/optimizer.py`; `compiler/equivalence.py`; `test_equivalence.py`; property tests.
 - Exit: each rule's positive/negative tests; equivalence 100% for each rule alone and all rules; optimized programs match the example JSON.
 
 ### Step 11 — Tuning and examples
 - [ ] **T26** `eval/tune.py` on dev split; freeze `runtime.yaml`.
-- [ ] **T27** `tests/test_examples.py` over all 25 entries in the example JSON.
+- [x] **T27** `tests/test_examples.py` over all 25 entries in the example JSON.
 - Exit: zero violations; explanation tests; example test green.
 
 ### Step 12 — Interface

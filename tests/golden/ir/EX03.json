@@ -1,0 +1,33 @@
+{
+  "channels": {
+    "metadata": true,
+    "semantic": true
+  },
+  "constraints": [
+    {
+      "field": "genre",
+      "op": "NOT_HAS",
+      "span": [
+        0,
+        10
+      ],
+      "strictness": "hard",
+      "value": "Romance"
+    }
+  ],
+  "diagnostics": [],
+  "ir_version": "1.0",
+  "output": {
+    "explain": true,
+    "limit": 10
+  },
+  "preferences": [],
+  "ranking": {
+    "diversity": "none",
+    "fusion": "rrf",
+    "mmr_lambda": 0.7,
+    "rrf_k": 60
+  },
+  "semantic_text": "",
+  "source": "no romance"
+}

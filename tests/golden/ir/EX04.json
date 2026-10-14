@@ -1,0 +1,53 @@
+{
+  "channels": {
+    "metadata": true,
+    "semantic": true
+  },
+  "constraints": [
+    {
+      "field": "genre",
+      "op": "HAS",
+      "span": [
+        0,
+        13
+      ],
+      "strictness": "hard",
+      "value": "Comedy"
+    },
+    {
+      "field": "year",
+      "op": "<=",
+      "span": [
+        21,
+        24
+      ],
+      "strictness": "hard",
+      "value": 1999
+    },
+    {
+      "field": "year",
+      "op": ">=",
+      "span": [
+        21,
+        24
+      ],
+      "strictness": "hard",
+      "value": 1990
+    }
+  ],
+  "diagnostics": [],
+  "ir_version": "1.0",
+  "output": {
+    "explain": true,
+    "limit": 10
+  },
+  "preferences": [],
+  "ranking": {
+    "diversity": "none",
+    "fusion": "rrf",
+    "mmr_lambda": 0.7,
+    "rrf_k": 60
+  },
+  "semantic_text": "comedy",
+  "source": "only comedies in the 90s"
+}

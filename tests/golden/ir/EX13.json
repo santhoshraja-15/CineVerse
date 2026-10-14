@@ -1,0 +1,28 @@
+{
+  "channels": {
+    "metadata": true,
+    "semantic": true
+  },
+  "constraints": [],
+  "diagnostics": [],
+  "ir_version": "1.0",
+  "output": {
+    "explain": true,
+    "limit": 3
+  },
+  "preferences": [
+    {
+      "kind": "text",
+      "polarity": 1,
+      "value": "time travel"
+    }
+  ],
+  "ranking": {
+    "diversity": "none",
+    "fusion": "rrf",
+    "mmr_lambda": 0.7,
+    "rrf_k": 60
+  },
+  "semantic_text": "time travel",
+  "source": "show me 3 time travel movies"
+}

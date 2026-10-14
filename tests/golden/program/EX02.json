@@ -1,0 +1,25 @@
+{
+  "optimized": [
+    "%s0 = SCAN",
+    "%m1 = MASK %s0, [genre NOT_HAS Musical]",
+    "%a1 = SEM_SEARCH \"comedy animation\", %m1, c=200",
+    "%b1 = META_SEARCH genres=[Animation, Comedy], terms=[], %m1, c=200",
+    "%f = RRF %a1, %b1, k=60",
+    "%r = SOFT %f, prefs=[genre:Animation+, genre:Comedy+], soft=[]",
+    "%t = TOPK %r, n=10",
+    "%x = EXPLAIN %t",
+    "RET %x"
+  ],
+  "unoptimized": [
+    "%s0 = SCAN",
+    "%a1 = SEM_SEARCH \"comedy animation\", %s0, c=N",
+    "%a2 = FILTER_LIST %a1, [genre NOT_HAS Musical], c=200",
+    "%b1 = META_SEARCH genres=[Animation, Comedy], terms=[], %s0, c=N",
+    "%b2 = FILTER_LIST %b1, [genre NOT_HAS Musical], c=200",
+    "%f = RRF %a2, %b2, k=60",
+    "%r = SOFT %f, prefs=[genre:Animation+, genre:Comedy+], soft=[]",
+    "%t = TOPK %r, n=10",
+    "%x = EXPLAIN %t",
+    "RET %x"
+  ]
+}

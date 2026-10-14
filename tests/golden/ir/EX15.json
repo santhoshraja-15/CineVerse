@@ -1,0 +1,44 @@
+{
+  "channels": {
+    "metadata": true,
+    "semantic": true
+  },
+  "constraints": [],
+  "diagnostics": [
+    {
+      "code": "S114",
+      "hint": null,
+      "message": "'only … or …' cannot be applied strictly; used as preferences",
+      "severity": "WARNING",
+      "span": [
+        0,
+        20
+      ]
+    }
+  ],
+  "ir_version": "1.0",
+  "output": {
+    "explain": true,
+    "limit": 10
+  },
+  "preferences": [
+    {
+      "kind": "genre",
+      "polarity": 1,
+      "value": "Comedy"
+    },
+    {
+      "kind": "genre",
+      "polarity": 1,
+      "value": "Drama"
+    }
+  ],
+  "ranking": {
+    "diversity": "none",
+    "fusion": "rrf",
+    "mmr_lambda": 0.7,
+    "rrf_k": 60
+  },
+  "semantic_text": "comedy drama",
+  "source": "only comedy or drama"
+}

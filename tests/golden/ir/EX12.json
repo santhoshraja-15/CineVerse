@@ -1,0 +1,39 @@
+{
+  "channels": {
+    "metadata": true,
+    "semantic": true
+  },
+  "constraints": [],
+  "diagnostics": [
+    {
+      "code": "S106",
+      "hint": null,
+      "message": "'gore' cannot be checked exactly; applied as a preference",
+      "severity": "WARNING",
+      "span": [
+        0,
+        7
+      ]
+    }
+  ],
+  "ir_version": "1.0",
+  "output": {
+    "explain": true,
+    "limit": 10
+  },
+  "preferences": [
+    {
+      "kind": "text",
+      "polarity": -1,
+      "value": "gore"
+    }
+  ],
+  "ranking": {
+    "diversity": "none",
+    "fusion": "rrf",
+    "mmr_lambda": 0.7,
+    "rrf_k": 60
+  },
+  "semantic_text": "",
+  "source": "no gore"
+}

@@ -1,0 +1,43 @@
+{
+  "channels": {
+    "metadata": true,
+    "semantic": true
+  },
+  "constraints": [
+    {
+      "field": "rating",
+      "op": ">=",
+      "span": [
+        12,
+        28
+      ],
+      "strictness": "hard",
+      "value": 4.0
+    },
+    {
+      "field": "year",
+      "op": ">=",
+      "span": [
+        0,
+        10
+      ],
+      "strictness": "hard",
+      "value": 2016
+    }
+  ],
+  "diagnostics": [],
+  "ir_version": "1.0",
+  "output": {
+    "explain": true,
+    "limit": 10
+  },
+  "preferences": [],
+  "ranking": {
+    "diversity": "none",
+    "fusion": "rrf",
+    "mmr_lambda": 0.7,
+    "rrf_k": 60
+  },
+  "semantic_text": "",
+  "source": "after 2015, rated at least 4"
+}

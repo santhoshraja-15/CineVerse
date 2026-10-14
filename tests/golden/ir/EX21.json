@@ -1,0 +1,50 @@
+{
+  "channels": {
+    "metadata": true,
+    "semantic": true
+  },
+  "constraints": [
+    {
+      "field": "year",
+      "op": ">=",
+      "span": [
+        8,
+        17
+      ],
+      "strictness": "hard",
+      "value": 2005
+    }
+  ],
+  "diagnostics": [
+    {
+      "code": "S101",
+      "hint": "Did you mean Thriller?",
+      "message": "'thriler' is not a known genre; used as a description",
+      "severity": "INFO",
+      "span": [
+        0,
+        7
+      ]
+    }
+  ],
+  "ir_version": "1.0",
+  "output": {
+    "explain": true,
+    "limit": 10
+  },
+  "preferences": [
+    {
+      "kind": "text",
+      "polarity": 1,
+      "value": "thriler"
+    }
+  ],
+  "ranking": {
+    "diversity": "none",
+    "fusion": "rrf",
+    "mmr_lambda": 0.7,
+    "rrf_k": 60
+  },
+  "semantic_text": "thriler",
+  "source": "thriler from 2005"
+}

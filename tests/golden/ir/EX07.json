@@ -1,0 +1,49 @@
+{
+  "channels": {
+    "metadata": true,
+    "semantic": true
+  },
+  "constraints": [],
+  "diagnostics": [
+    {
+      "code": "S112",
+      "hint": null,
+      "message": "Converted 2 hours to 120 minutes",
+      "severity": "INFO",
+      "span": [
+        7,
+        20
+      ]
+    },
+    {
+      "code": "S105",
+      "hint": null,
+      "message": "runtime is not available in this catalogue; 'under 2 hours' was not applied",
+      "severity": "WARNING",
+      "span": [
+        7,
+        20
+      ]
+    }
+  ],
+  "ir_version": "1.0",
+  "output": {
+    "explain": true,
+    "limit": 10
+  },
+  "preferences": [
+    {
+      "kind": "genre",
+      "polarity": 1,
+      "value": "Comedy"
+    }
+  ],
+  "ranking": {
+    "diversity": "none",
+    "fusion": "rrf",
+    "mmr_lambda": 0.7,
+    "rrf_k": 60
+  },
+  "semantic_text": "comedy",
+  "source": "comedy under 2 hours"
+}

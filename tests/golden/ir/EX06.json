@@ -1,0 +1,44 @@
+{
+  "channels": {
+    "metadata": true,
+    "semantic": true
+  },
+  "constraints": [
+    {
+      "field": "year",
+      "op": ">=",
+      "span": [
+        0,
+        21
+      ],
+      "strictness": "soft",
+      "value": 2001
+    }
+  ],
+  "diagnostics": [],
+  "ir_version": "1.0",
+  "output": {
+    "explain": true,
+    "limit": 10
+  },
+  "preferences": [
+    {
+      "kind": "genre",
+      "polarity": 1,
+      "value": "Thriller"
+    },
+    {
+      "kind": "text",
+      "polarity": 1,
+      "value": "dark"
+    }
+  ],
+  "ranking": {
+    "diversity": "none",
+    "fusion": "rrf",
+    "mmr_lambda": 0.7,
+    "rrf_k": 60
+  },
+  "semantic_text": "dark thriller",
+  "source": "preferably after 2000, dark thriller"
+}

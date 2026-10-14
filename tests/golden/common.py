@@ -52,13 +52,15 @@ def stage_ast(text: str, reg: DomainRegistry) -> Any:
 
 
 def stage_ir(text: str, reg: DomainRegistry) -> Any | None:
-    """IR after passes; None until the driver exists."""
+    """IR after passes ({"ok": false, ...} when compilation stops); None until the driver exists."""
     try:
         from cineverse.compiler.driver import compile_text
     except ImportError:
         return None
     result = compile_text(text, reg, _cfg(), optimize=False)
-    return None if result.ir is None else json.loads(result.ir.to_json())
+    if result.ir is None:
+        return {"ok": False, "diagnostics": [d.code for d in result.diagnostics]}
+    return json.loads(result.ir.to_json())
 
 
 def stage_program(text: str, reg: DomainRegistry) -> Any | None:
