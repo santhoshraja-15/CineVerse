@@ -11,9 +11,9 @@ from __future__ import annotations
 
 import copy
 
-from cineverse.compiler.ir import Capabilities, CompiledQuery
+from cineverse.compiler.ir import Capabilities, CompiledQuery, format_constraint
 from cineverse.compiler.passes import Rule, RuleApplication, RuleLog
-from cineverse.compiler.planner import LogicalPlan, PlanNode
+from cineverse.compiler.planner import SOURCES, LogicalPlan, PlanNode
 
 
 def _empty_sources(plan: LogicalPlan) -> list[str]:
@@ -66,7 +66,49 @@ def _o3_apply(plan: LogicalPlan) -> tuple[LogicalPlan, list[str]]:
 O3 = Rule("O3", "plan", _o3_pre, _o3_apply)
 
 
-ALL_PLAN_RULES = (O3,)  # O4 is added in T25
+# --------------------------------------------------------------------------- O4
+
+
+def _pushable(plan: LogicalPlan) -> list[tuple[str, str]]:
+    """(source, its FilterList) pairs of the canonical form X(scope=s0, c=N) -> FilterList."""
+    pairs = []
+    for n in sorted(plan.nodes.values(), key=lambda n: n.id):
+        if n.op in SOURCES and n.args.get("c") == "N":
+            consumers = plan.consumers(n.id)
+            if len(consumers) == 1 and plan.nodes[consumers[0]].op == "FilterList":
+                pairs.append((n.id, consumers[0]))
+    return pairs
+
+
+def _o4_pre(plan: LogicalPlan, ir: CompiledQuery, caps: Capabilities) -> bool:
+    """Exact search only (flat FAISS or NumPy); predicates read movie attributes only."""
+    return caps.exact_search and bool(_pushable(plan))
+
+
+def _o4_apply(plan: LogicalPlan) -> tuple[LogicalPlan, list[str]]:
+    pairs = _pushable(plan)
+    preds = list(plan.nodes[pairs[0][1]].args["preds"])
+    scan = plan.nodes[pairs[0][0]].inputs[0]
+    scope = scan
+    if preds:
+        scope = plan.add("m1", "Mask", [scan], preds=preds)
+    for src, flt in pairs:
+        source = plan.nodes[src]
+        source.inputs = [scope]
+        source.args["c"] = plan.nodes[flt].args["c"]
+        for other in plan.nodes.values():
+            other.inputs = [src if i == flt else i for i in other.inputs]
+        del plan.nodes[flt]
+    targets = ", ".join(src for src, _ in pairs)
+    if preds:
+        shown = ", ".join(format_constraint(c) for c in preds)
+        return plan, [f"pushed MASK [{shown}] into {targets}"]
+    return plan, [f"pushed truncation into {targets}"]
+
+
+O4 = Rule("O4", "plan", _o4_pre, _o4_apply)
+
+ALL_PLAN_RULES = (O3, O4)  # spec order
 
 
 def optimize(
