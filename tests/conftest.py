@@ -6,12 +6,29 @@ The toy catalogue uses synthetic titles only (Master Instructions §A, anti-hall
 from __future__ import annotations
 
 import math
+from pathlib import Path
 
 import numpy as np
 import pytest
 
-from cineverse.config import MetadataConfig, RuntimeConfig, SoftConfig
+from cineverse.compiler.ir import Capabilities
+from cineverse.compiler.registry import DomainRegistry, build_registry
+from cineverse.config import MetadataConfig, RuntimeConfig, SoftConfig, load_registry_config
 from cineverse.runtime.catalog import Catalog
+
+ROOT = Path(__file__).resolve().parents[1]
+# Year range of the pinned ml-latest-small snapshot (T01 C12); the full suite reads it from data.
+CATALOG_YEARS = (1902, 2018)
+
+
+@pytest.fixture(scope="session")
+def registry() -> DomainRegistry:
+    """Registry with the CORE capabilities assumed by the Example JSON."""
+    return build_registry(
+        load_registry_config(ROOT / "config" / "registry.yaml"),
+        year_domain=CATALOG_YEARS,
+        caps=Capabilities(exact_search=True, semantic_available=True, mmr_available=False),
+    )
 
 # id, title, year, genres, tags, rating, votes, bayes
 TOY_MOVIES = [
