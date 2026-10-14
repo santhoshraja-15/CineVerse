@@ -48,6 +48,24 @@ def versions(ctx: RuntimeContext, registry: DomainRegistry) -> dict[str, Any]:
             "dataset_sha256": dataset, "model": ctx.cfg.model_name}
 
 
+def status() -> dict[str, Any]:
+    """Facts for the UI footer and header: catalogue size, capabilities and versions."""
+    ctx, registry = default_runtime()
+    info = versions(ctx, registry)
+    commit = "unknown"
+    head = Path(".git/HEAD")
+    if head.is_file():
+        ref = head.read_text("utf-8").strip()
+        if ref.startswith("ref: "):
+            ref_path = Path(".git") / ref[5:]
+            commit = ref_path.read_text("utf-8").strip()[:7] if ref_path.is_file() else "unknown"
+        else:
+            commit = ref[:7]
+    return {**info, "catalog_rows": len(ctx.catalog), "semantic": ctx.caps.semantic_available,
+            "exact_search": ctx.caps.exact_search, "commit": commit,
+            "year_domain": registry.year_domain}
+
+
 def recommend(
     text: str,
     *,
