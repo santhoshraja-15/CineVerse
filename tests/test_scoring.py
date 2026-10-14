@@ -57,3 +57,13 @@ def test_tag_match_is_whole_word_or_phrase():
     assert tag_match("thought", ["thought-provoking"]) == "thought-provoking"
     assert tag_match("thoughtful", ["thought-provoking"]) is None
     assert tag_match("art", ["dark"]) is None
+
+
+def test_duplicate_soft_conditions_count_once(toy_catalog, soft_cfg):
+    """IR set semantics: found by the O1 soundness property test."""
+    dup = [Constraint(field="year", op=">=", value=2016, strictness="soft", span=(i, i + 1))
+           for i in range(2)]
+    rl = RankedList((3,), (0.5,), "rrf", {})
+    once = soft_score(toy_catalog, rl, [P("genre", "Romance", -1)] * 2, dup[:1], soft_cfg)
+    twice = soft_score(toy_catalog, rl, [P("genre", "Romance", -1)] * 2, dup, soft_cfg)
+    assert once.scores == twice.scores == (pytest.approx(0.5 - 0.3 - 0.2),)

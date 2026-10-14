@@ -21,6 +21,8 @@ from cineverse.compiler.ir import (
     pref_key,
 )
 
+LOWER, UPPER = (">=", ">"), ("<=", "<")
+
 
 @dataclass
 class RuleApplication:
@@ -85,7 +87,75 @@ def _o2_apply(ir: CompiledQuery) -> tuple[CompiledQuery, str]:
 O2 = Rule("O2", "ir", _o2_pre, _o2_apply)
 
 
-ALL_IR_RULES = (O2,)  # O1 is added in T23
+# --------------------------------------------------------------------------- O1
+
+
+def _tighter(a: Constraint, b: Constraint) -> Constraint:
+    """The stronger of two bounds in the same direction."""
+    if a.op in LOWER:
+        return a if (a.value, a.op == ">") >= (b.value, b.op == ">") else b
+    return a if (-float(a.value), a.op == "<") >= (-float(b.value), b.op == "<") else b
+
+
+def _implies(hard: Constraint, soft: Constraint) -> bool:
+    """Does the hard bound imply the soft bound (same field and direction)?"""
+    h, s = float(hard.value), float(soft.value)
+    if hard.op in LOWER:
+        return h > s or (h == s and not (soft.op == ">" and hard.op == ">="))
+    return h < s or (h == s and not (soft.op == "<" and hard.op == "<="))
+
+
+def _direction(c: Constraint) -> str | None:
+    return "lower" if c.op in LOWER else "upper" if c.op in UPPER else None
+
+
+def _o1_pre(ir: CompiledQuery) -> bool:
+    return True
+
+
+def _o1_apply(ir: CompiledQuery) -> tuple[CompiledQuery, str]:
+    details: list[str] = []
+    seen: set[tuple[str, str, str, str]] = set()
+    cons: list[Constraint] = []
+    for c in ir.constraints:  # (a) duplicates
+        key = constraint_key(c)
+        if key in seen:
+            details.append(f"removed duplicate {_label(c)}")
+        else:
+            seen.add(key)
+            cons.append(c)
+
+    drop: set[int] = set()
+    for i, a in enumerate(cons):  # (b) two hard bounds, one field and direction
+        for j in range(i + 1, len(cons)):
+            b = cons[j]
+            if i in drop or j in drop or a.strictness != "hard" or b.strictness != "hard":
+                continue
+            if a.field != b.field or _direction(a) is None or _direction(a) != _direction(b):
+                continue
+            keep = _tighter(a, b)
+            loser = j if keep is a else i
+            drop.add(loser)
+            details.append(f"hard {format_constraint(cons[loser])} subsumed by hard "
+                           f"{format_constraint(keep)}")
+    for i, s in enumerate(cons):  # (c) soft bound implied by a hard bound
+        if i in drop or s.strictness != "soft" or _direction(s) is None:
+            continue
+        for j, h in enumerate(cons):
+            if j in drop or h.strictness != "hard" or h.field != s.field:
+                continue
+            if _direction(h) == _direction(s) and _implies(h, s):
+                drop.add(i)
+                details.append(f"soft {format_constraint(s)} implied by hard "
+                               f"{format_constraint(h)}")
+                break
+    kept = [c for i, c in enumerate(cons) if i not in drop]
+    return ir.model_copy(update={"constraints": kept}), "; ".join(details)
+
+
+O1 = Rule("O1", "ir", _o1_pre, _o1_apply)
+
+ALL_IR_RULES = (O2, O1)  # spec order
 
 
 def run_ir_passes(ir: CompiledQuery, enabled: set[str]) -> tuple[CompiledQuery, RuleLog]:

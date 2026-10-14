@@ -58,3 +58,64 @@ def test_o2_result_satisfies_v5(registry):
     ir, _ = run_ir_passes(q([C("year", ">", 2000), C("rating", ">=", 3.0)],
                             [P("text", "z"), P("genre", "Comedy")]), {"O2"})
     assert validate(ir, registry, after_passes=True) == []
+
+
+# --------------------------------------------------------------------------- O1
+
+
+def test_o1_keeps_tighter_of_two_hard_bounds():
+    ir, log = run_ir_passes(q([C("year", ">", 2000), C("year", ">", 2010)]), {"O2", "O1"})
+    assert ops(ir) == [("year", ">=", 2011, "hard")]
+    assert [r.display() for r in log] == [
+        "O2: year > 2000 -> year >= 2001; year > 2010 -> year >= 2011",
+        "O1: hard year >= 2001 subsumed by hard year >= 2011",
+    ]
+
+
+def test_o1_tighter_upper_bound():
+    ir, _ = run_ir_passes(q([C("rating", "<=", 4.5), C("rating", "<=", 3.0)]), {"O1"})
+    assert ops(ir) == [("rating", "<=", 3.0, "hard")]
+
+
+def test_o1_strict_float_bound_beats_equal_closed_bound():
+    ir, _ = run_ir_passes(q([C("rating", ">=", 4.0), C("rating", ">", 4.0)]), {"O1"})
+    assert ops(ir) == [("rating", ">", 4.0, "hard")]
+
+
+def test_o1_drops_soft_bound_implied_by_hard():
+    ir, log = run_ir_passes(q([C("year", ">=", 2000, "soft"), C("year", ">=", 2011)]), {"O1"})
+    assert ops(ir) == [("year", ">=", 2011, "hard")]
+    assert log[0].detail == "soft year >= 2000 implied by hard year >= 2011"
+
+
+def test_o1_negative_two_soft_bounds_not_merged():
+    cons = [C("year", ">=", 2000, "soft"), C("year", ">=", 2010, "soft")]
+    ir, log = run_ir_passes(q(cons), {"O1"})
+    assert len(ir.constraints) == 2 and log == []
+
+
+def test_o1_negative_opposite_directions_kept():
+    cons = [C("year", "<=", 1990, "soft"), C("year", ">=", 2011)]
+    ir, log = run_ir_passes(q(cons), {"O1"})
+    assert len(ir.constraints) == 2 and log == []
+
+
+def test_o1_negative_soft_not_implied_when_looser_hard():
+    cons = [C("year", ">=", 2011, "soft"), C("year", ">=", 2000)]
+    assert len(run_ir_passes(q(cons), {"O1"})[0].constraints) == 2
+
+
+def test_o1_removes_duplicates_without_o2():
+    ir, log = run_ir_passes(q([C("genre", "NOT_HAS", "Horror")] * 2), {"O1"})
+    assert len(ir.constraints) == 1 and log[0].detail.startswith("removed duplicate")
+
+
+def test_disabled_rules_do_nothing():
+    ir = q([C("year", ">", 2010), C("year", ">", 2000)])
+    assert run_ir_passes(ir, set()) == (ir, [])
+
+
+def test_rule_log_records_before_and_after():
+    _, log = run_ir_passes(q([C("year", ">", 2010)]), {"O2"})
+    assert log[0].before["constraints"][0]["op"] == ">"
+    assert log[0].after["constraints"][0]["op"] == ">="

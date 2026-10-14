@@ -38,9 +38,15 @@ def soft_score(
     soft: Sequence[Constraint],
     cfg: SoftConfig,
 ) -> RankedList:
-    """SOFT: add soft terms to the fused score and re-rank. Sums, not fractions."""
+    """SOFT: add soft terms to the fused score and re-rank. Sums, not fractions.
+
+    P+, P− and C_soft are sets (IR semantics): a repeated preference or soft constraint counts
+    once, so removing duplicates (O2, O1) never changes a score.
+    """
     if not rl.ids:
         return RankedList.empty("soft")
+    prefs = list(dict.fromkeys(prefs))
+    soft = list({(c.field, c.op, str(c.value)): c for c in soft}.values())
     ids = np.asarray(rl.ids, dtype=np.int64)
     rows = catalog.rows(ids)
     genres, tags = catalog.column("genres"), catalog.column("tags")

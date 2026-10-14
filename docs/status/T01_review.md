@@ -57,3 +57,4 @@ schema but add a definition the spec lacks; they are recorded for the decision l
 | C20 | IR §2 validators | "convert to S-diagnostics in the driver" gives no mapping | V1 → S105, V2 → S103, V3 → S107; V4/V5 cannot be caused by a request and are raised as compiler bugs |
 | C21 | IR §1 `compile()` | Without a RuntimeContext the semantic capability is unknown | `compile()` treats the semantic channel as available when `embeddings.npy` and `ids.npy` exist; `recommend()` uses the loaded context's real capabilities |
 | C22 | Frontend §4 grammar | Separators before the first clause, after the last, or repeated | Skipped silently (no P001) |
+| C23 | Engine §11.5 vs Optimizer §3.1 (O1 a) | A repeated soft condition was charged twice at run time, so removing the duplicate (O1, O2) changed scores; found by the O1 soundness property test | SOFT sums over sets (IR set semantics): a repeated preference or soft constraint counts once |
